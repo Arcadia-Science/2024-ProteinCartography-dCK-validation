@@ -72,12 +72,14 @@ Under `heatmap` is the script we used to prepare an enzyme activity heatmap plot
 
 ### Compute Specifications
 
-TODO: Describe what compute resources were used to run the analysis. For example, you could list the operating system, number of cores, RAM, and storage space.
-
 Computer model: MacBook Pro, 13-inch, 2020, Four Thunderbolt 3 ports
+
 Processor: 2GHz Quad-Core Intel Core i5
+
 Graphics: Intel Iris Plus Graphics 1536 MB
+
 Memory: 16GB 3733 MNz LPDDR4X
+
 macOS: Sonoma 14.4.1
 
 ## Contributing
