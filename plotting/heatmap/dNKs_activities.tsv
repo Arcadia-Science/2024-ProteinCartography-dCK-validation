@@ -1,0 +1,35 @@
+LC	Organism	Enzyme	dT	dC	dA	dG
+LC06	Bacillus cereus	dAK	0	55	100	0
+LC03	Mycoplasma	dAK	0	58	100	25
+LC03	Flavobacterium psychrophilum	dAK	0	15	100	0
+LC03	Polaribacter sp. MED 152	dAK	0	2	100	0
+LC03	Dictyostelium discoideum	dAK	1	0	100	0
+LC04	Xenopus laevis	dCK	0	100	2	3
+LC04	Gallus gallus	dCK	0	100	66	15
+LC04	Homo sapiens	dCK	0	100	4	4
+LC04	Xenopus laevis	dCK2	0	1	27	100
+LC04	Gallus gallus	dCK2	0	24	73	100
+LC03	Bacillus cereus	dGK	0	0	0	100
+LC06	Dictyostelium discoideum	dGK	0	0	0	100
+LC05	Xenopus laevis	dGK	0	1	1	100
+LC05	Homo sapiens	dGK	0	0	8	100
+LC02	Arabidopsis thaliana	dNK	0	55	100	30
+LC03	Drosophila melanogaster	dNK	100	88	1	0.2
+LC00	Bombyx mori	dNK	65	100	2.7	0.5
+LC03	Anopheles gambia	dNK	100	99	48	83
+LC07	Polaribacter sp. MED 152	TK	100	0	0	0
+LC07	Escherichia coli	TK1	100	0	0	0
+LC07	Salmonella enterica	TK1	100	0	0	0
+LC07	Bacillus anthracis	TK1	100	0	0	0
+LC07	Bacillus cereus	TK1	100	0	0	0
+LC07	Mycoplasma	TK1	100	0	0	0
+LC07	Flavobacterium psychrophilum	TK1	100	0	0	0
+LC07	Dictyostelium discoideum	TK1	100	0	0	0
+LC07	Caenorhabditis elegans	TK1	100	0	0	0
+LC07	Xenopus tropicalis	TK1	100	0	0	0
+LC07	Gallus gallus	TK1	100	0	0	0
+LC07	Homo sapiens	TK1	100	0	0	0
+LC07	Arabidopsis thaliana	TK1a	100	0	0	0
+LC07	Arabidopsis thaliana	TK1b	100	0	0	0
+LC00	Xenopus laevis	TK2	19	100	0	0
+LC00	Homo sapiens	TK2	100	58	0	0
