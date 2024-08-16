@@ -4,7 +4,7 @@
 
 ## Purpose
 
-This repo accompanies the pub on ProteinCartography validation using the dCK protein family. 
+This repo accompanies the pub on ProteinCartography validation using the dCK protein family (DOI: https://doi.org/10.57844/arcadia-a757-3651)
 
 The analyses include Leiden Cluster subclustering to identify representative proteins for biochemicaly validation in the lab. These scripts are under the `subclustering` folder. 
 

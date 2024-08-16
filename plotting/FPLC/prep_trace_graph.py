@@ -43,13 +43,9 @@ def create_plot(input_file, output_file):
     plt.figure()
     plt.plot(data.iloc[:, 0], data.iloc[:, 1], linestyle='-')
 
-    # Label the axes based on the column headers
-    plt.xlabel(data.columns[0])
-    plt.ylabel(data.columns[1])
-
-    # Apply fixed x-axis and y-axis labels
-    plt.xlabel("Elution volume (ml)")
-    plt.ylabel("Relative absorbance units")
+    # Apply x-axis and y-axis labels
+    plt.xlabel("Elution volume (ml)", fontsize=15, fontname="Suisse Int'l")
+    plt.ylabel("Relative absorbance units", fontsize=15, fontname="Suisse Int'l")
 
     # Get the current axis
     ax = plt.gca()
@@ -59,7 +55,8 @@ def create_plot(input_file, output_file):
     ax.spines['right'].set_visible(False)
 
     # Apply Arcadia figure formatting
-    apc.mpl.style_plot()
+    apc.mpl.setup()
+    apc.mpl.style_plot(monospaced_axes="both")
 
     # Save the plot as an SVG file
     plt.savefig(output_file, format='svg')

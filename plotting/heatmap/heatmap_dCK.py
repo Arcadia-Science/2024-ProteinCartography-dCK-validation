@@ -103,6 +103,7 @@ def create_heatmap(input_file, output_file):
     plt.subplots_adjust(left=0.193, right=0.33, bottom=0.11, top=0.88, wspace=0.998, hspace=0.2)
 
     # Apply Arcadia figure formatting
+    apc.mpl.setup()
     apc.mpl.style_plot(colorbar_exists=True)
 
     # Save the plot as an SVG file
