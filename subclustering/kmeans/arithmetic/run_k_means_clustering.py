@@ -59,22 +59,22 @@ def find_representatives(protein_means, centroid):
     closest_protein = min(protein_means, key=lambda x: abs(x[1] - centroid))
     farthest_above_protein = max(
         protein_means,
-        key=lambda x: x[1] - centroid if x[1] > centroid else float('-inf')
+        key=lambda x: x[1] - centroid if x[1] > centroid else float("-inf")
     )
     farthest_below_protein = min(
         protein_means,
-        key=lambda x: x[1] - centroid if x[1] < centroid else float('inf')
+        key=lambda x: x[1] - centroid if x[1] < centroid else float("inf")
     )
     return closest_protein, farthest_above_protein, farthest_below_protein
 
 def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
-    df_matrix = pd.read_csv(matrix_tsv, sep='\t', index_col=0)
-    df_leiden = pd.read_csv(cluster_tsv, sep='\t')
+    df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
+    df_leiden = pd.read_csv(cluster_tsv, sep="\t")
 
-    leiden_groups = df_leiden.groupby('LeidenCluster')
+    leiden_groups = df_leiden.groupby("LeidenCluster")
     output_columns = [
-        'LeidenCluster', 'KMeansCluster', 'Centroid', 'ClosestProtein', 'ClosestValue',
-        'FarthestAboveProtein', 'FarthestAboveValue', 'FarthestBelowProtein', 'FarthestBelowValue'
+        "LeidenCluster", "KMeansCluster", "Centroid", "ClosestProtein", "ClosestValue",
+        "FarthestAboveProtein", "FarthestAboveValue", "FarthestBelowProtein", "FarthestBelowValue"
     ]
     output_df = pd.DataFrame(columns=output_columns)
 
@@ -84,7 +84,7 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     data = []
 
     for leiden_cluster, group in leiden_groups:
-        protein_names = group['protid'].tolist()
+        protein_names = group["protid"].tolist()
 
         protein_df = df_matrix.loc[protein_names, protein_names]
         kmeans = KMeans(n_clusters=3, random_state=0)
@@ -107,36 +107,36 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
             closest, farthest_above, farthest_below = \
                 find_representatives(protein_means, cluster_centroid)
             row = {
-                'LeidenCluster': leiden_cluster,
-                'KMeansCluster': f'KC{i}',
-                'Centroid': cluster_centroid,
-                'ClosestProtein': closest[0], 'ClosestValue': closest[1],
-                'FarthestBelowProtein': farthest_below[0], 'FarthestBelowValue': farthest_below[1],
-                'FarthestAboveProtein': farthest_above[0], 'FarthestAboveValue': farthest_above[1]
+                "LeidenCluster": leiden_cluster,
+                "KMeansCluster": f"KC{i}",
+                "Centroid": cluster_centroid,
+                "ClosestProtein": closest[0], "ClosestValue": closest[1],
+                "FarthestBelowProtein": farthest_below[0], "FarthestBelowValue": farthest_below[1],
+                "FarthestAboveProtein": farthest_above[0], "FarthestAboveValue": farthest_above[1]
             }
             rows_to_append.append(row)
 
             # Organizing headers and data for output file 2
             headers_lc.extend([leiden_cluster])
-            headers_kc.extend([f'KC{i}'])
+            headers_kc.extend([f"KC{i}"])
             data.append([p[0] for p in protein_means])
 
         if rows_to_append:
-            rows_df = pd.DataFrame(rows_to_append).dropna(how='all')
+            rows_df = pd.DataFrame(rows_to_append).dropna(how="all")
             if not rows_df.empty:
                 if output_df.empty:
                     output_df = rows_df
                 else:
                     output_df = pd.concat([output_df, rows_df], ignore_index=True)
-        output_df.to_csv(output_file1, sep='\t', index=False)
+        output_df.to_csv(output_file1, sep="\t", index=False)
 
-    with open(output_file2, 'w') as f:
-        f.write('\t'.join(headers_lc) + '\n')
-        f.write('\t'.join(headers_kc) + '\n')
+    with open(output_file2, "w") as f:
+        f.write("\t".join(headers_lc) + "\n")
+        f.write("\t".join(headers_kc) + "\n")
         max_len = max(len(d) for d in data)
         for i in range(max_len):
             row = [d[i] if i < len(d) else '' for d in data]
-            f.write('\t'.join(row) + '\n')
+            f.write("\t".join(row) + "\n")
 
 def main():
     args = parse_args()

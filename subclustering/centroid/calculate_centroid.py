@@ -19,7 +19,7 @@ python calculate_centroid.py \
 
 Arguments:
 -m, --matrix-tsv: Path to the input TSV file containing the TM-score matrix.
--c, --cluster-tsv: Path to the TSV file with the LC labels (columns 'protid' and 'LeidenCluster').
+-c, --cluster-tsv: Path to the TSV file with the LC labels (columns "protid" and "LeidenCluster").
 -o, --output-folder: Path to the output folder where the results will be written.
 """
 
@@ -82,19 +82,19 @@ def find_highest(row_means):
     return highest_index, highest_score
 
 def read_matrix(matrix_tsv):
-    df = pd.read_csv(matrix_tsv, sep='\t', index_col=0)
+    df = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
     return df
 
 def read_clusters(cluster_tsv):
-    cluster_df = pd.read_csv(cluster_tsv, sep='\t')
+    cluster_df = pd.read_csv(cluster_tsv, sep="\t")
     clusters = {}
-    for cluster in sorted(cluster_df['LeidenCluster'].unique()):
-        clusters[cluster] = cluster_df[cluster_df['LeidenCluster'] == cluster]['protid'].tolist()
+    for cluster in sorted(cluster_df["LeidenCluster"].unique()):
+        clusters[cluster] = cluster_df[cluster_df["LeidenCluster"] == cluster]["protid"].tolist()
     return clusters
 
 def write_tsv(output_folder, filename, data, columns):
     df = pd.DataFrame(data, columns=columns)
-    df.to_csv(output_folder / filename, sep='\t', index=False)
+    df.to_csv(output_folder / filename, sep="\t", index=False)
 
 def compute_results(args):
     tm_scores_df = read_matrix(args.matrix_tsv)
@@ -137,22 +137,22 @@ def compute_results(args):
 
     write_tsv(
         output_folder,
-        'combined.tsv',
+        "combined.tsv",
         combined_data,
-        ['Cluster', 'Arithmetic Mean']
+        ["Cluster", "Arithmetic Mean"]
     )
 
     write_tsv(
         output_folder,
-        'arithmetic_mean.tsv',
+        "arithmetic_mean.tsv",
         arithmetic_mean_data,
-        ['Cluster',
-         'Closest Protein',
-         'TM-score',
-         'Lowest Protein',
-         'TM-score',
-         'Highest Protein',
-         'TM-score']
+        ["Cluster",
+         "Closest Protein",
+         "TM-score",
+         "Lowest Protein",
+         "TM-score",
+         "Highest Protein",
+         "TM-score"]
     )
 
 def main():

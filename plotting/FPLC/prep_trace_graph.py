@@ -38,11 +38,11 @@ def create_plot(input_file, output_file):
     line plot. It saves the plot as an SVG file at the specified output file path.
     """
     # Load the data from the TSV file
-    data = pd.read_csv(input_file, sep='\t', encoding='utf-8')
+    data = pd.read_csv(input_file, sep="\t", encoding="utf-8")
 
     # Create a simple line plot of the data
     plt.figure()
-    plt.plot(data.iloc[:, 0], data.iloc[:, 1], linestyle='-')
+    plt.plot(data.iloc[:, 0], data.iloc[:, 1], linestyle="-")
 
     # Apply x-axis and y-axis labels
     plt.xlabel("Elution volume (ml)", fontsize=15, fontname="Suisse Int'l")
@@ -52,15 +52,15 @@ def create_plot(input_file, output_file):
     ax = plt.gca()
 
     # Remove the top and right spines (frame lines)
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
 
     # Apply Arcadia figure formatting
     apc.mpl.setup()
     apc.mpl.style_plot(monospaced_axes="both")
 
     # Save the plot as an SVG file
-    plt.savefig(output_file, format='svg')
+    plt.savefig(output_file, format="svg")
 
 def main():
     args = parse_args()

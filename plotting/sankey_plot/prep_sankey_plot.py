@@ -36,10 +36,10 @@ def create_sankey_diagram(input_file, output_file):
     This function reads the TSV file, processes the data, and creates a Sankey diagram.
     It saves the diagram as a PNG file at the specified output file path.
     """
-    data = pd.read_csv(input_file, sep='\t')
+    data = pd.read_csv(input_file, sep="\t")
 
-    sources = data['Activity-based annotation'].tolist()
-    targets = data['LeidenCluster'].tolist()
+    sources = data["Activity-based annotation"].tolist()
+    targets = data["LeidenCluster"].tolist()
     sorted_targets = sorted(set(targets), reverse=False)
     unique_sources = list(set(sources))
     labels = unique_sources + sorted_targets
@@ -49,24 +49,24 @@ def create_sankey_diagram(input_file, output_file):
     values = [1] * len(sources)
 
     color_mapping = {
-        'dNK': '#F28360',
-        'TK': '#FFCFAF',
-        'TK1': '#FFCFAF',
-        'TK2': '#FFCFAF',
-        'TK1a': '#FFCFAF',
-        'TK1b': '#FFCFAF',
-        'dCK': '#FFB883',
-        'dCK2': '#FFB883',
-        'dAK': '#C85152',
-        'dGK': '#9E3F41',
-        'LC00': '#635C5A',
-        'LC02': '#8F8885',
-        'LC03': '#B9AFA7',
-        'LC05': '#DBD1C3',
-        'LC06': '#EDE6DA',
-        'LC07': '#FFFFFF',
+        "dNK": "#F28360",
+        "TK": "#FFCFAF",
+        "TK1": "#FFCFAF",
+        "TK2": "#FFCFAF",
+        "TK1a": "#FFCFAF",
+        "TK1b": "#FFCFAF",
+        "dCK": "#FFB883",
+        "dCK2": "#FFB883",
+        "dAK": "#C85152",
+        "dGK": "#9E3F41",
+        "LC00": "#635C5A",
+        "LC02": "#8F8885",
+        "LC03": "#B9AFA7",
+        "LC05": "#DBD1C3",
+        "LC06": "#EDE6DA",
+        "LC07": "#FFFFFF",
     }
-    colors = [color_mapping.get(label, 'rgba(127, 127, 127, 0.8)') for label in labels]
+    colors = [color_mapping.get(label, "rgba(127, 127, 127, 0.8)") for label in labels]
 
     fig = go.Figure(data=[go.Sankey(
         node=dict(

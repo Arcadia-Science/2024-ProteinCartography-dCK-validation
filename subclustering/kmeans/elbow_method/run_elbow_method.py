@@ -53,7 +53,7 @@ def parse_args():
     return args
 
 def read_matrix_from_tsv(file_path):
-    df = pd.read_csv(file_path, sep='\t', index_col=0)
+    df = pd.read_csv(file_path, sep="\t", index_col=0)
     return df.values
 
 def elbow_method(matrix, max_k, plot_file, output_file):
@@ -65,26 +65,26 @@ def elbow_method(matrix, max_k, plot_file, output_file):
         kmeans.fit(matrix)
         distortions.append(kmeans.inertia_)
 
-    kneedle = KneeLocator(K, distortions, curve='convex', direction='decreasing')
+    kneedle = KneeLocator(K, distortions, curve="convex", direction="decreasing")
     optimal_k = kneedle.elbow
 
     if optimal_k is None:
         optimal_k = 1
 
     plt.figure(figsize=(8, 6))
-    plt.plot(K, distortions, 'bx-')
-    plt.xlabel('Number of clusters (k)')
-    plt.ylabel('Distortion')
-    plt.title('The Elbow Method showing the optimal k')
-    plt.vlines(optimal_k, plt.ylim()[0], plt.ylim()[1], linestyles='dashed', colors='r')
+    plt.plot(K, distortions, "bx-")
+    plt.xlabel("Number of clusters (k)")
+    plt.ylabel("Distortion")
+    plt.title("The Elbow Method showing the optimal k")
+    plt.vlines(optimal_k, plt.ylim()[0], plt.ylim()[1], linestyles="dashed", colors="r")
 
     # Apply Arcadia figure formatting
     apc.mpl.style_plot()
 
-    plt.savefig(plot_file, format='svg')
+    plt.savefig(plot_file, format="svg")
 
-    with open(output_file, 'w') as f:
-        f.write(f'The optimal number of clusters is: {optimal_k}\n')
+    with open(output_file, "w") as f:
+        f.write(f"The optimal number of clusters is: {optimal_k}\n")
 
     return optimal_k
 

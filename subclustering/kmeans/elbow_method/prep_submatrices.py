@@ -4,8 +4,9 @@ from pathlib import Path
 import pandas as pd
 
 """
-This script splits a matrix into sub-matrices based on unique cluster labels from a cluster
-information file. Each sub-matrix is saved as a separate TSV file named with the cluster label
+This script splits a matrix into sub-matrices based on unique
+cluster labels from a cluster information file. Each sub-matrix
+is saved as a separate TSV file named with the cluster label
 in a specified output directory.
 
 Usage:
@@ -41,7 +42,7 @@ def parse_args():
     return args
 
 def load_tsv(file_path, index_col=None):
-    return pd.read_csv(file_path, sep='\t', index_col=index_col)
+    return pd.read_csv(file_path, sep="\t", index_col=index_col)
 
 def split_matrix_by_cluster(matrix_file, cluster_file, output_dir):
     output_dir = Path(output_dir)
@@ -53,12 +54,12 @@ def split_matrix_by_cluster(matrix_file, cluster_file, output_dir):
     matrix_df.index.name = None
     matrix_df.columns.name = None
 
-    unique_clusters = cluster_df['LeidenCluster'].unique()
+    unique_clusters = cluster_df["LeidenCluster"].unique()
 
     for cluster in unique_clusters:
-        proteins_in_cluster = cluster_df[cluster_df['LeidenCluster'] == cluster].index
+        proteins_in_cluster = cluster_df[cluster_df["LeidenCluster"] == cluster].index
         sub_matrix = matrix_df.loc[proteins_in_cluster, proteins_in_cluster]
-        sub_matrix.to_csv(output_dir / f'{cluster}.tsv', sep='\t')
+        sub_matrix.to_csv(output_dir / f"{cluster}.tsv", sep="\t")
 
 if __name__ == "__main__":
     args = parse_args()

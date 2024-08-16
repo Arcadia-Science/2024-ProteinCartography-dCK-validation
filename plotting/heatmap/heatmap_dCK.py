@@ -41,7 +41,7 @@ def create_heatmap(input_file, output_file):
     output file path.
     """
     # Load the data from a TSV file
-    data = pd.read_csv(input_file, sep='\t', encoding='utf-8')
+    data = pd.read_csv(input_file, sep="\t", encoding="utf-8")
 
     # Extract labels and data values
     secondary_labels = data.iloc[:, 1]
@@ -49,7 +49,7 @@ def create_heatmap(input_file, output_file):
     data_values = data.iloc[:, 3:]
 
     # Convert data to numeric type (float), if necessary
-    data_values = data_values.apply(pd.to_numeric, errors='coerce')
+    data_values = data_values.apply(pd.to_numeric, errors="coerce")
 
     # Invert the data by subtracting each value from 100
     inverted_data_values = 100 - data_values
@@ -63,15 +63,15 @@ def create_heatmap(input_file, output_file):
     ax1 = fig.add_subplot(gs[1])
 
     # Plotting the secondary labels
-    ax0.axis('off')
-    font_style = {'fontstyle': "italic", 'fontname': "Suisse Int'l"}
+    ax0.axis("off")
+    font_style = {"fontstyle": "italic", "fontname": "Suisse Int'l"}
     for i, label in enumerate(secondary_labels):
         ax0.text(
             0.5,
             (len(secondary_labels) - i - 0.5) / len(secondary_labels),
             label,
-            ha='right',
-            va='center',
+            ha="right",
+            va="center",
             fontdict=font_style
         )
 
@@ -81,16 +81,16 @@ def create_heatmap(input_file, output_file):
         annot=False,
         fmt=".1f",
         cmap=apc.gradients.reds.to_mpl_cmap(),
-        cbar_kws={'label': 'Normalized enzyme activity'},
+        cbar_kws={"label": "Normalized enzyme activity"},
         vmin=0,
         vmax=100,
         linewidths=1,
-        linecolor='white',
+        linecolor="white",
         ax=ax1
     )
     heatmap.set_yticklabels(primary_labels, rotation=0)
     heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=45)
-    heatmap.tick_params(axis='both', which='both', length=0)
+    heatmap.tick_params(axis="both", which="both", length=0)
 
     # Access and modify the color bar
     cbar = heatmap.collections[0].colorbar
@@ -108,7 +108,7 @@ def create_heatmap(input_file, output_file):
     apc.mpl.style_plot(colorbar_exists=True)
 
     # Save the plot as an SVG file
-    plt.savefig(output_file, format='svg')
+    plt.savefig(output_file, format="svg")
 
 def main():
     args = parse_args()

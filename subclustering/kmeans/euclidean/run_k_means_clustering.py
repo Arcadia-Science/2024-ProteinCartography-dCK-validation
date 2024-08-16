@@ -83,13 +83,13 @@ def find_representatives(protein_df, centroid):
     return closest_protein, farthest_protein
 
 def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
-    df_matrix = pd.read_csv(matrix_tsv, sep='\t', index_col=0)
-    df_leiden = pd.read_csv(cluster_tsv, sep='\t')
-    leiden_groups = df_leiden.groupby('LeidenCluster')
+    df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
+    df_leiden = pd.read_csv(cluster_tsv, sep="\t")
+    leiden_groups = df_leiden.groupby("LeidenCluster")
     output_columns = [
-        'LeidenCluster', 'KMeansCluster', 'ClusterCentroid',
-        'ClosestKmeans', 'ClosestKmeansValue', 'ClosestKmeansMean',
-        'FarthestKmeans', 'FarthestKmeansValue', 'FarthestKmeansMean'
+        "LeidenCluster", "KMeansCluster", "ClusterCentroid",
+        "ClosestKmeans", "ClosestKmeansValue", "ClosestKmeansMean",
+        "FarthestKmeans", "FarthestKmeansValue", "FarthestKmeansMean"
     ]
     output_df = pd.DataFrame(columns=output_columns)
     headers_lc = []
@@ -97,7 +97,7 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     data = []
 
     for leiden_cluster, group in leiden_groups:
-        protein_names = group['protid'].tolist()
+        protein_names = group["protid"].tolist()
         protein_df = df_matrix.loc[protein_names, protein_names]
         kmeans = KMeans(n_clusters=3, random_state=0)
         kmeans.fit(protein_df)
@@ -109,19 +109,19 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
             kmeans_centroid = kmeans.cluster_centers_[i]
             closest_kmeans, farthest_kmeans = find_representatives(cluster_data, kmeans_centroid)
 
-            closest_kmeans_formatted = ', '.join(map(str, closest_kmeans[1]))
-            farthest_kmeans_formatted = ', '.join(map(str, farthest_kmeans[1]))
+            closest_kmeans_formatted = ", ".join(map(str, closest_kmeans[1]))
+            farthest_kmeans_formatted = ", ".join(map(str, farthest_kmeans[1]))
 
             row = {
-                'LeidenCluster': leiden_cluster,
-                'KMeansCluster': f'KC{i}',
-                'ClusterCentroid': ', '.join(f"{x:.3f}" for x in kmeans_centroid),
-                'ClosestKmeans': closest_kmeans[0],
-                'ClosestKmeansValue': closest_kmeans_formatted,
-                'ClosestKmeansMean': f"{closest_kmeans[2]:.3f}",
-                'FarthestKmeans': farthest_kmeans[0],
-                'FarthestKmeansValue': farthest_kmeans_formatted,
-                'FarthestKmeansMean': f"{farthest_kmeans[2]:.3f}"
+                "LeidenCluster": leiden_cluster,
+                "KMeansCluster": f"KC{i}",
+                "ClusterCentroid": ", ".join(f"{x:.3f}" for x in kmeans_centroid),
+                "ClosestKmeans": closest_kmeans[0],
+                "ClosestKmeansValue": closest_kmeans_formatted,
+                "ClosestKmeansMean": f"{closest_kmeans[2]:.3f}",
+                "FarthestKmeans": farthest_kmeans[0],
+                "FarthestKmeansValue": farthest_kmeans_formatted,
+                "FarthestKmeansMean": f"{farthest_kmeans[2]:.3f}"
             }
 
             new_row_df = pd.DataFrame([row])
@@ -129,18 +129,18 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
 
             # Collect data for output file 2
             headers_lc.append(leiden_cluster)
-            headers_kc.append(f'KC{i}')
+            headers_kc.append(f"KC{i}")
             data.append([p for p in filtered_data.index])
 
-    output_df.to_csv(output_file1, sep='\t', index=False)
+    output_df.to_csv(output_file1, sep="\t", index=False)
 
-    with open(output_file2, 'w') as f:
-        f.write('\t'.join(headers_lc) + '\n')
-        f.write('\t'.join(headers_kc) + '\n')
+    with open(output_file2, "w") as f:
+        f.write("\t".join(headers_lc) + "\n")
+        f.write("\t".join(headers_kc) + "\n")
         max_len = max(len(d) for d in data)
         for i in range(max_len):
             row = [d[i] if i < len(d) else '' for d in data]
-            f.write('\t'.join(row) + '\n')
+            f.write("\t".join(row) + "\n")
 
 def main():
     args = parse_args()
