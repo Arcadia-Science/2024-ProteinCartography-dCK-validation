@@ -15,6 +15,7 @@ python prep_trace_graph.py -f input_file -o output_file
 The first draft of this script was prepared with ChatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -31,6 +32,7 @@ def parse_args():
     )
     args = parser.parse_args()
     return args
+
 
 def create_plot(input_file, output_file):
     """
@@ -62,9 +64,11 @@ def create_plot(input_file, output_file):
     # Save the plot as an SVG file
     plt.savefig(output_file, format="svg")
 
+
 def main():
     args = parse_args()
     create_plot(args.input_file, args.output_file)
+
 
 if __name__ == "__main__":
     main()

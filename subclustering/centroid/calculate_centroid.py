@@ -23,28 +23,27 @@ Arguments:
 -o, --output-folder: Path to the output folder where the results will be written.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the TM-score matrix."
+        help="Path to the TSV file containing the TM-score matrix.",
     )
     parser.add_argument(
         "-c",
         "--cluster-tsv",
         required=True,
-        help="Path to the TSV file containing protein clusters."
+        help="Path to the TSV file containing protein clusters.",
     )
     parser.add_argument(
-        "-o",
-        "--output-folder",
-        required=True,
-        help="Path to the folder for the output TSV files."
+        "-o", "--output-folder", required=True, help="Path to the folder for the output TSV files."
     )
     args = parser.parse_args()
     return args
+
 
 def calculate_arithmetic_mean(tm_scores, protein_names):
     row_means = [np.mean(scores) if scores else np.nan for scores in tm_scores]
@@ -52,16 +51,19 @@ def calculate_arithmetic_mean(tm_scores, protein_names):
     closest_index, closest_score = find_closest_to_centroid(row_means, centroid)
     lowest_index, lowest_score = find_lowest(row_means)
     highest_index, highest_score = find_highest(row_means)
-    results = [[
-        centroid,
-        protein_names[closest_index],
-        closest_score,
-        protein_names[lowest_index],
-        lowest_score,
-        protein_names[highest_index],
-        highest_score
-    ]]
+    results = [
+        [
+            centroid,
+            protein_names[closest_index],
+            closest_score,
+            protein_names[lowest_index],
+            lowest_score,
+            protein_names[highest_index],
+            highest_score,
+        ]
+    ]
     return results
+
 
 def find_closest_to_centroid(row_means, centroid):
     valid_indices = [i for i, score in enumerate(row_means) if not np.isnan(score)]
@@ -69,11 +71,13 @@ def find_closest_to_centroid(row_means, centroid):
     closest_score = row_means[closest_index]
     return closest_index, closest_score
 
+
 def find_lowest(row_means):
     valid_indices = [i for i, score in enumerate(row_means) if not np.isnan(score)]
     lowest_index = min(valid_indices, key=lambda i: row_means[i])
     lowest_score = row_means[lowest_index]
     return lowest_index, lowest_score
+
 
 def find_highest(row_means):
     valid_indices = [i for i, score in enumerate(row_means) if not np.isnan(score)]
@@ -81,9 +85,11 @@ def find_highest(row_means):
     highest_score = row_means[highest_index]
     return highest_index, highest_score
 
+
 def read_matrix(matrix_tsv):
     df = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
     return df
+
 
 def read_clusters(cluster_tsv):
     cluster_df = pd.read_csv(cluster_tsv, sep="\t")
@@ -92,9 +98,11 @@ def read_clusters(cluster_tsv):
         clusters[cluster] = cluster_df[cluster_df["LeidenCluster"] == cluster]["protid"].tolist()
     return clusters
 
+
 def write_tsv(output_folder, filename, data, columns):
     df = pd.DataFrame(data, columns=columns)
     df.to_csv(output_folder / filename, sep="\t", index=False)
+
 
 def compute_results(args):
     tm_scores_df = read_matrix(args.matrix_tsv)
@@ -127,37 +135,33 @@ def compute_results(args):
         arithmetic_results = calculate_arithmetic_mean(cluster_tm_scores, valid_proteins)
         arithmetic_mean_data.extend([[cluster] + res[1:] for res in arithmetic_results])
 
-        combined_data.append([
-            cluster,
-            arithmetic_results[0][0]
-        ])
+        combined_data.append([cluster, arithmetic_results[0][0]])
 
     output_folder = Path(args.output_folder)
     output_folder.mkdir(parents=True, exist_ok=True)
 
-    write_tsv(
-        output_folder,
-        "combined.tsv",
-        combined_data,
-        ["Cluster", "Arithmetic Mean"]
-    )
+    write_tsv(output_folder, "combined.tsv", combined_data, ["Cluster", "Arithmetic Mean"])
 
     write_tsv(
         output_folder,
         "arithmetic_mean.tsv",
         arithmetic_mean_data,
-        ["Cluster",
-         "Closest Protein",
-         "TM-score",
-         "Lowest Protein",
-         "TM-score",
-         "Highest Protein",
-         "TM-score"]
+        [
+            "Cluster",
+            "Closest Protein",
+            "TM-score",
+            "Lowest Protein",
+            "TM-score",
+            "Highest Protein",
+            "TM-score",
+        ],
     )
+
 
 def main():
     args = parse_args()
     compute_results(args)
+
 
 if __name__ == "__main__":
     main()

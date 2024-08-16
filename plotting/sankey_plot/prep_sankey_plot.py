@@ -14,6 +14,7 @@ python prep_sankey_plot.py -f input_file -o output_file.
 The first draft of this script was prepared with ChatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -30,6 +31,7 @@ def parse_args():
     )
     args = parser.parse_args()
     return args
+
 
 def create_sankey_diagram(input_file, output_file):
     """
@@ -68,20 +70,20 @@ def create_sankey_diagram(input_file, output_file):
     }
     colors = [color_mapping.get(label, "rgba(127, 127, 127, 0.8)") for label in labels]
 
-    fig = go.Figure(data=[go.Sankey(
-        node=dict(
-            pad=15,
-            thickness=20,
-            line=dict(color="black", width=0.5),
-            label=labels,
-            color=colors,
-        ),
-        link=dict(
-            source=source_indices,
-            target=target_indices,
-            value=values
-        )
-    )])
+    fig = go.Figure(
+        data=[
+            go.Sankey(
+                node=dict(
+                    pad=15,
+                    thickness=20,
+                    line=dict(color="black", width=0.5),
+                    label=labels,
+                    color=colors,
+                ),
+                link=dict(source=source_indices, target=target_indices, value=values),
+            )
+        ]
+    )
     fig.update_layout(
         title_text="Sankey Diagram",
         font=dict(family="Suisse Int'l Regular", size=15),
@@ -91,9 +93,11 @@ def create_sankey_diagram(input_file, output_file):
 
     fig.write_image(output_file, scale=10)
 
+
 def main():
     args = parse_args()
     create_sankey_diagram(args.input_file, args.output_file)
+
 
 if __name__ == "__main__":
     main()

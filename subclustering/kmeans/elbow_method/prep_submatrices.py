@@ -18,31 +18,31 @@ python prep_submatrices.py \
 The first draft of this script was prepared with chatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-m",
         "--matrix-file",
         required=True,
-        help="Path to the TSV file containing the main matrix."
+        help="Path to the TSV file containing the main matrix.",
     )
     parser.add_argument(
         "-c",
         "--cluster-file",
         required=True,
-        help="Path to the TSV file containing the cluster information."
+        help="Path to the TSV file containing the cluster information.",
     )
     parser.add_argument(
-        "-o",
-        "--output-dir",
-        required=True,
-        help="Directory where the sub-matrices will be saved."
+        "-o", "--output-dir", required=True, help="Directory where the sub-matrices will be saved."
     )
     args = parser.parse_args()
     return args
 
+
 def load_tsv(file_path, index_col=None):
     return pd.read_csv(file_path, sep="\t", index_col=index_col)
+
 
 def split_matrix_by_cluster(matrix_file, cluster_file, output_dir):
     output_dir = Path(output_dir)
@@ -60,6 +60,7 @@ def split_matrix_by_cluster(matrix_file, cluster_file, output_dir):
         proteins_in_cluster = cluster_df[cluster_df["LeidenCluster"] == cluster].index
         sub_matrix = matrix_df.loc[proteins_in_cluster, proteins_in_cluster]
         sub_matrix.to_csv(output_dir / f"{cluster}.tsv", sep="\t")
+
 
 if __name__ == "__main__":
     args = parse_args()

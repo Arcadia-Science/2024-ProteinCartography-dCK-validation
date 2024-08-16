@@ -22,39 +22,39 @@ python run_elbow_method.py \
 The first draft of this script was prepared with chatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the TM-score matrix."
+        help="Path to the TSV file containing the TM-score matrix.",
     )
     parser.add_argument(
-        "-p",
-        "--plot-file",
-        required=True,
-        help="Path to the output PNG file for the Elbow plot."
+        "-p", "--plot-file", required=True, help="Path to the output PNG file for the Elbow plot."
     )
     parser.add_argument(
         "-o",
         "--output-file",
         required=True,
-        help="Path to the output text file for the optimal number of clusters."
+        help="Path to the output text file for the optimal number of clusters.",
     )
     parser.add_argument(
         "-k",
         "--max-k",
         type=int,
         default=10,
-        help="Maximum number of clusters to test (default: 10)."
+        help="Maximum number of clusters to test (default: 10).",
     )
     args = parser.parse_args()
     return args
 
+
 def read_matrix_from_tsv(file_path):
     df = pd.read_csv(file_path, sep="\t", index_col=0)
     return df.values
+
 
 def elbow_method(matrix, max_k, plot_file, output_file):
     distortions = []
@@ -87,6 +87,7 @@ def elbow_method(matrix, max_k, plot_file, output_file):
         f.write(f"The optimal number of clusters is: {optimal_k}\n")
 
     return optimal_k
+
 
 if __name__ == "__main__":
     args = parse_args()

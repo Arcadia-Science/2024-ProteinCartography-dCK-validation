@@ -6,7 +6,7 @@
 
 This repo accompanies the pub on ProteinCartography validation using the dCK protein family (DOI: https://doi.org/10.57844/arcadia-a757-3651)
 
-The analyses include Leiden Cluster subclustering to identify representative proteins for biochemicaly validation in the lab. These scripts are under the `subclustering` folder. 
+The analyses include Leiden Cluster subclustering to identify representative proteins for biochemicaly validation in the lab. These scripts are under the `subclustering` folder.
 
 There are also additional scripts included that were used to prepare the figures in the publication. These scripts are under the `plotting` folder
 
@@ -42,7 +42,7 @@ conda activate PC_validation
 
 ## Data
 
-The scripts could be run with the included data files under each of the analysis folders. These can be found under the `subclustering` folder. The plots can also be produced using the provided data files for each type of plot under the `plotting` folder. 
+The scripts could be run with the included data files under each of the analysis folders. These can be found under the `subclustering` folder. The plots can also be produced using the provided data files for each type of plot under the `plotting` folder.
 
 We have all of our data that was part of this pub on Zenodo here - LINK TO ZENODO DATABASE
 
@@ -54,9 +54,9 @@ There are two main folders with scripts and input files. The `subclustering` fol
 
 ### Methods
 
-The scripts in the repo are relatively easy to use with sufficient level of comments. 
+The scripts in the repo are relatively easy to use with sufficient level of comments.
 
-There are three sets of scripts in the `subclustering` folder. 
+There are three sets of scripts in the `subclustering` folder.
 
 Under each of the `centroid`, `kmeans`, and `foldseek` folders are the scripts used to run each subclustering method. For the K-Means and the Foldseek subclustering methods, there are two separate scripts that use slightly different methodologies to subcluster and select representative proteins. For example, we have one script that uses Euclidean distances and a second script that uses arithmetic mean distances to perform the K-Means analysis. Similarly, we have one script that uses the 3Di alphabet and a second script that uses the typical amino acid letters to perform the Foldseek analysis. Each of these scripts is provided under appropriately named folders.
 
@@ -64,7 +64,7 @@ Under the `kmeans` folder, there is also the `elbow_method` folder that has the 
 
 In addition to the scripts, there are the input files that we used for each analysis. This includes the elbow method, as well as each of our subclusering approaches. These files are in the `input_files` folder. Please check out the accompanying pub for more details about the scripts and their outputs.
 
-Lastly, there are three sets of scripts in the `plotting` folder. 
+Lastly, there are three sets of scripts in the `plotting` folder.
 
 Under `heatmap` is the script we used to prepare an enzyme activity heatmap plot that is shown in Figure 1 of our pub. The `sankey_plot` folder contains the script we used to prepare the Sankey plot that is also shown in Figure 1. And in the `FPLC` folder is the script that we used to generate the FPLC traces shown in Figures 2 and 3 of the pub. Each of these folders also contain the corresponding input `TSV` files that were used to run the scripts and produce the plots.
 

@@ -17,6 +17,7 @@ python heatmap_dCK.py -f input_file -o output_file.
 The first draft of this script was prepared with ChatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -33,6 +34,7 @@ def parse_args():
     )
     args = parser.parse_args()
     return args
+
 
 def create_heatmap(input_file, output_file):
     """
@@ -72,7 +74,7 @@ def create_heatmap(input_file, output_file):
             label,
             ha="right",
             va="center",
-            fontdict=font_style
+            fontdict=font_style,
         )
 
     # Generate the heatmap
@@ -86,7 +88,7 @@ def create_heatmap(input_file, output_file):
         vmax=100,
         linewidths=1,
         linecolor="white",
-        ax=ax1
+        ax=ax1,
     )
     heatmap.set_yticklabels(primary_labels, rotation=0)
     heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=45)
@@ -110,9 +112,11 @@ def create_heatmap(input_file, output_file):
     # Save the plot as an SVG file
     plt.savefig(output_file, format="svg")
 
+
 def main():
     args = parse_args()
     create_heatmap(args.input_file, args.output_file)
+
 
 if __name__ == "__main__":
     main()

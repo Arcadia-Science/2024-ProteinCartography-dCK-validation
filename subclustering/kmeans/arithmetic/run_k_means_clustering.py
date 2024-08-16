@@ -26,46 +26,47 @@ python run_k_means_clustering.py \
 The first draft of this script was prepared with chatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the TM-score matrix."
+        help="Path to the TSV file containing the TM-score matrix.",
     )
     parser.add_argument(
         "-c",
         "--cluster-tsv",
         required=True,
-        help="Path to the TSV file containing protein clusters."
+        help="Path to the TSV file containing protein clusters.",
     )
     parser.add_argument(
         "-o",
         "--output-file1",
         required=True,
-        help="Path to the output TSV file showing centroids and representative proteins."
+        help="Path to the output TSV file showing centroids and representative proteins.",
     )
     parser.add_argument(
         "-e",
         "--output-file2",
         required=True,
-        help="Path to the output TSV file showing the proteins in each kmeans cluster."
+        help="Path to the output TSV file showing the proteins in each kmeans cluster.",
     )
     args = parser.parse_args()
     return args
 
+
 def find_representatives(protein_means, centroid):
     closest_protein = min(protein_means, key=lambda x: abs(x[1] - centroid))
     farthest_above_protein = max(
-        protein_means,
-        key=lambda x: x[1] - centroid if x[1] > centroid else float("-inf")
+        protein_means, key=lambda x: x[1] - centroid if x[1] > centroid else float("-inf")
     )
     farthest_below_protein = min(
-        protein_means,
-        key=lambda x: x[1] - centroid if x[1] < centroid else float("inf")
+        protein_means, key=lambda x: x[1] - centroid if x[1] < centroid else float("inf")
     )
     return closest_protein, farthest_above_protein, farthest_below_protein
+
 
 def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
@@ -73,8 +74,15 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
 
     leiden_groups = df_leiden.groupby("LeidenCluster")
     output_columns = [
-        "LeidenCluster", "KMeansCluster", "Centroid", "ClosestProtein", "ClosestValue",
-        "FarthestAboveProtein", "FarthestAboveValue", "FarthestBelowProtein", "FarthestBelowValue"
+        "LeidenCluster",
+        "KMeansCluster",
+        "Centroid",
+        "ClosestProtein",
+        "ClosestValue",
+        "FarthestAboveProtein",
+        "FarthestAboveValue",
+        "FarthestBelowProtein",
+        "FarthestBelowValue",
     ]
     output_df = pd.DataFrame(columns=output_columns)
 
@@ -104,15 +112,19 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
             cluster_centroid = row_means.mean()
             protein_means = list(zip(cluster_data.index, row_means, strict=False))
 
-            closest, farthest_above, farthest_below = \
-                find_representatives(protein_means, cluster_centroid)
+            closest, farthest_above, farthest_below = find_representatives(
+                protein_means, cluster_centroid
+            )
             row = {
                 "LeidenCluster": leiden_cluster,
                 "KMeansCluster": f"KC{i}",
                 "Centroid": cluster_centroid,
-                "ClosestProtein": closest[0], "ClosestValue": closest[1],
-                "FarthestBelowProtein": farthest_below[0], "FarthestBelowValue": farthest_below[1],
-                "FarthestAboveProtein": farthest_above[0], "FarthestAboveValue": farthest_above[1]
+                "ClosestProtein": closest[0],
+                "ClosestValue": closest[1],
+                "FarthestBelowProtein": farthest_below[0],
+                "FarthestBelowValue": farthest_below[1],
+                "FarthestAboveProtein": farthest_above[0],
+                "FarthestAboveValue": farthest_above[1],
             }
             rows_to_append.append(row)
 
@@ -135,12 +147,14 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
         f.write("\t".join(headers_kc) + "\n")
         max_len = max(len(d) for d in data)
         for i in range(max_len):
-            row = [d[i] if i < len(d) else '' for d in data]
+            row = [d[i] if i < len(d) else "" for d in data]
             f.write("\t".join(row) + "\n")
+
 
 def main():
     args = parse_args()
     run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2)
+
 
 if __name__ == "__main__":
     main()

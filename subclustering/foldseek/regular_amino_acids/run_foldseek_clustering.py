@@ -29,6 +29,7 @@ python run_foldseek_clustering.py \
 The script was prepared with the assistance of ChatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -46,6 +47,7 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+
 def run_foldseek(input_folder):
     """
     Changes the working directory to the specified input
@@ -56,6 +58,7 @@ def run_foldseek(input_folder):
     os.chdir(input_folder)
     command = "foldseek easy-cluster . res tmp --alignment-type 1 -c 0.1"
     subprocess.run(command, shell=True, check=True)
+
 
 def process_res_file(input_folder, output_folder):
     """
@@ -72,13 +75,14 @@ def process_res_file(input_folder, output_folder):
     with open(res_file_path) as file:
         for line in file:
             if line.startswith(">"):
-                pdb_name = line[1:line.index(".pdb")]
+                pdb_name = line[1 : line.index(".pdb")]
                 pdb_file = f"{pdb_name}.pdb"
                 source_path = os.path.join(input_folder, pdb_file)
                 destination_subfolder = os.path.join(output_folder, os.path.basename(input_folder))
                 os.makedirs(destination_subfolder, exist_ok=True)
                 destination_path = os.path.join(destination_subfolder, pdb_file)
                 shutil.copy(source_path, destination_path)
+
 
 def main():
     args = parse_args()
@@ -90,6 +94,7 @@ def main():
         if os.path.isdir(subfolder_path):
             run_foldseek(subfolder_path)
             process_res_file(subfolder_path, output_folder)
+
 
 if __name__ == "__main__":
     main()

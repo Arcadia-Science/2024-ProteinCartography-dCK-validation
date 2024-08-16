@@ -32,34 +32,36 @@ python run_k_means_clustering.py \
 The first draft of this script was prepared with chatGPT.
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the TM-score matrix."
+        help="Path to the TSV file containing the TM-score matrix.",
     )
     parser.add_argument(
         "-c",
         "--cluster-tsv",
         required=True,
-        help="Path to the TSV file containing protein clusters."
+        help="Path to the TSV file containing protein clusters.",
     )
     parser.add_argument(
         "-o",
         "--output-file1",
         required=True,
-        help="Path to the output TSV file showing centroids and representative proteins."
+        help="Path to the output TSV file showing centroids and representative proteins.",
     )
     parser.add_argument(
         "-e",
         "--output-file2",
         required=True,
-        help="Path to the output TSV file showing the proteins in each kmeans cluster."
+        help="Path to the output TSV file showing the proteins in each kmeans cluster.",
     )
     args = parser.parse_args()
     return args
+
 
 def find_representatives(protein_df, centroid):
     # Calculate Euclidean distances from the centroid to each protein
@@ -70,26 +72,29 @@ def find_representatives(protein_df, centroid):
     closest_values = protein_df.iloc[closest_index].tolist()
     farthest_values = protein_df.iloc[farthest_index].tolist()
 
-    closest_protein = (
-        protein_df.index[closest_index],
-        closest_values,
-        distances[closest_index]
-    )
+    closest_protein = (protein_df.index[closest_index], closest_values, distances[closest_index])
     farthest_protein = (
         protein_df.index[farthest_index],
         farthest_values,
-        distances[farthest_index]
+        distances[farthest_index],
     )
     return closest_protein, farthest_protein
+
 
 def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
     df_leiden = pd.read_csv(cluster_tsv, sep="\t")
     leiden_groups = df_leiden.groupby("LeidenCluster")
     output_columns = [
-        "LeidenCluster", "KMeansCluster", "ClusterCentroid",
-        "ClosestKmeans", "ClosestKmeansValue", "ClosestKmeansMean",
-        "FarthestKmeans", "FarthestKmeansValue", "FarthestKmeansMean"
+        "LeidenCluster",
+        "KMeansCluster",
+        "ClusterCentroid",
+        "ClosestKmeans",
+        "ClosestKmeansValue",
+        "ClosestKmeansMean",
+        "FarthestKmeans",
+        "FarthestKmeansValue",
+        "FarthestKmeansMean",
     ]
     output_df = pd.DataFrame(columns=output_columns)
     headers_lc = []
@@ -121,7 +126,7 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
                 "ClosestKmeansMean": f"{closest_kmeans[2]:.3f}",
                 "FarthestKmeans": farthest_kmeans[0],
                 "FarthestKmeansValue": farthest_kmeans_formatted,
-                "FarthestKmeansMean": f"{farthest_kmeans[2]:.3f}"
+                "FarthestKmeansMean": f"{farthest_kmeans[2]:.3f}",
             }
 
             new_row_df = pd.DataFrame([row])
@@ -139,12 +144,14 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
         f.write("\t".join(headers_kc) + "\n")
         max_len = max(len(d) for d in data)
         for i in range(max_len):
-            row = [d[i] if i < len(d) else '' for d in data]
+            row = [d[i] if i < len(d) else "" for d in data]
             f.write("\t".join(row) + "\n")
+
 
 def main():
     args = parse_args()
     run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2)
+
 
 if __name__ == "__main__":
     main()
