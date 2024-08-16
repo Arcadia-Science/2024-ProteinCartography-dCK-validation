@@ -1,14 +1,15 @@
 import argparse
+
 import pandas as pd
 import plotly.graph_objects as go
 
 """
-This script reads a TSV file containing data for a Sankey diagram, processes the data, 
-and generates a Sankey diagram as a PNG file. The script uses pandas to read the data 
-and plotly to create the diagram. 
+This script reads a TSV file containing data for a Sankey diagram, processes the data,
+and generates a Sankey diagram as a PNG file. The script uses pandas to read the data
+and plotly to create the diagram.
 
-To run the script, use the command: 
-python prep_sankey_plot.py -f input_file -o output_file. 
+To run the script, use the command:
+python prep_sankey_plot.py -f input_file -o output_file.
 
 The first draft of this script was prepared with ChatGPT.
 """

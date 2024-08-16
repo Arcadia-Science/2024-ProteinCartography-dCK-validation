@@ -1,14 +1,15 @@
-import arcadia_pycolor as apc
 import argparse
+
+import arcadia_pycolor as apc
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
 import pandas as pd
 import seaborn as sns
+from matplotlib import gridspec
 
 """
 This script reads a TSV file containing enzyme activity data, processes the data,
-and generates a heatmap along with secondary labels. The script uses pandas to read 
-the data and seaborn to create the heatmap. 
+and generates a heatmap along with secondary labels. The script uses pandas to read
+the data and seaborn to create the heatmap.
 
 To run the script, use the command:
 python heatmap_dCK.py -f input_file -o output_file.
@@ -35,8 +36,8 @@ def parse_args():
 
 def create_heatmap(input_file, output_file):
     """
-    This function reads the TSV file, processes the data, and creates a heatmap 
-    with secondary labels. It saves the heatmap as an SVG file at the specified 
+    This function reads the TSV file, processes the data, and creates a heatmap
+    with secondary labels. It saves the heatmap as an SVG file at the specified
     output file path.
     """
     # Load the data from a TSV file
@@ -93,7 +94,7 @@ def create_heatmap(input_file, output_file):
 
     # Access and modify the color bar
     cbar = heatmap.collections[0].colorbar
-    
+
     # Invert the color bar ticks and labels
     cbar.set_ticks([0, 20, 40, 60, 80, 100])
     cbar.set_ticklabels([100, 80, 60, 40, 20, 0])

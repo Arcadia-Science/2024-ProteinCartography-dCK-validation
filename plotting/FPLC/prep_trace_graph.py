@@ -1,12 +1,13 @@
-import arcadia_pycolor as apc
 import argparse
-import pandas as pd
+
+import arcadia_pycolor as apc
 import matplotlib.pyplot as plt
+import pandas as pd
 
 """
 This script reads a TSV file containing two columns, processes the data,
-and generates a simple line plot. The script uses pandas to read the data 
-and matplotlib to create the plot. 
+and generates a simple line plot. The script uses pandas to read the data
+and matplotlib to create the plot.
 
 To run the script, use the command:
 python prep_trace_graph.py -f input_file -o output_file
@@ -33,7 +34,7 @@ def parse_args():
 
 def create_plot(input_file, output_file):
     """
-    This function reads the TSV file, processes the data, and creates a simple 
+    This function reads the TSV file, processes the data, and creates a simple
     line plot. It saves the plot as an SVG file at the specified output file path.
     """
     # Load the data from the TSV file
