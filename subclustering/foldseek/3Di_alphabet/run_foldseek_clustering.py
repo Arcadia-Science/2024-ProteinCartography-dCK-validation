@@ -4,24 +4,24 @@ import shutil
 import subprocess
 
 """
-This script processes a directory containing subdirectories, 
+This script processes a directory containing subdirectories,
 each with multiple PDB files using Foldseek. This script runs
-Foldseek using the 3Di alphabet. The user needs to specify 
-the input directory containing the subdirectories, and the 
+Foldseek using the 3Di alphabet. The user needs to specify
+the input directory containing the subdirectories, and the
 output directory.
 
-Note1: make sure to use the absolute paths when specifying the 
+Note1: make sure to use the absolute paths when specifying the
 folder paths in the command below! The script will not work
 if the relative folder paths are used instead of the absolute
 folder paths!
 
-Note2: Foldseek will not run if, in the input folder, there are 
+Note2: Foldseek will not run if, in the input folder, there are
 output files that it has produced in a previous run. These are
 the .fasta, .tsv files, and the tmp folder. If you wish
 to re-run Foldseek multiple times on the same input folder, make
 sure to delete the Foldseek output files/folder between each run.
 
-To run the script, use the following command: 
+To run the script, use the following command:
 python run_foldseek_clustering.py \
 --input-folder /path/to/directory/with/PDBs/organized/in/subfolders/ \
 --output-folder /path/to/directory/for/subfolders/with/clustered/PDBs/
@@ -48,8 +48,8 @@ def parse_args():
 
 def run_foldseek(input_folder):
     """
-    Changes the working directory to the specified input 
-    folder and runs Foldseek. The function uses the subprocess 
+    Changes the working directory to the specified input
+    folder and runs Foldseek. The function uses the subprocess
     module to run the Foldseek command with specified parameters.
     It waits for the Foldseek process to complete before returning.
     """
@@ -60,16 +60,16 @@ def run_foldseek(input_folder):
 def process_res_file(input_folder, output_folder):
     """
     Processes the "res_rep_seq.fasta" file to move selected PDB
-    files to the output directory. The function reads the "res_rep_seq.fasta" 
-    file line by line, and for each line that starts with ">", 
-    it extracts the string between ">" and ".pdb", finds the 
-    corresponding PDB file in the input folder, and copies it to 
-    a newly created subfolder in the output folder (which has the 
+    files to the output directory. The function reads the "res_rep_seq.fasta"
+    file line by line, and for each line that starts with ">",
+    it extracts the string between ">" and ".pdb", finds the
+    corresponding PDB file in the input folder, and copies it to
+    a newly created subfolder in the output folder (which has the
     same name as the current subfolder).
     """
     current_working_dir = os.getcwd()
     res_file_path = os.path.join(current_working_dir, "res_rep_seq.fasta")
-    with open(res_file_path, "r") as file:
+    with open(res_file_path) as file:
         for line in file:
             if line.startswith(">"):
                 pdb_name = line[1:line.index(".pdb")]
@@ -84,7 +84,7 @@ def main():
     args = parse_args()
     input_folder = args.input_folder
     output_folder = args.output_folder
-    
+
     for subfolder in os.listdir(input_folder):
         subfolder_path = os.path.join(input_folder, subfolder)
         if os.path.isdir(subfolder_path):

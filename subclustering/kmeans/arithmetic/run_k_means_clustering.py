@@ -1,4 +1,5 @@
 import argparse
+
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -101,7 +102,7 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
 
             row_means = mean_calc_df.mean(axis=1)
             cluster_centroid = row_means.mean()
-            protein_means = list(zip(cluster_data.index, row_means))
+            protein_means = list(zip(cluster_data.index, row_means, strict=False))
 
             closest, farthest_above, farthest_below = \
                 find_representatives(protein_means, cluster_centroid)

@@ -1,6 +1,7 @@
 import argparse
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
 
 """
 This script splits a matrix into sub-matrices based on unique cluster labels from a cluster

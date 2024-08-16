@@ -1,13 +1,14 @@
-import arcadia_pycolor as apc
 import argparse
-from kneed import KneeLocator
+
+import arcadia_pycolor as apc
 import matplotlib.pyplot as plt
 import pandas as pd
+from kneed import KneeLocator
 from sklearn.cluster import KMeans
 
 """
 This script performs k-means clustering on a TM-score matrix using the Elbow method
-to determine the optimal number of clusters. It reads the matrix from a TSV file 
+to determine the optimal number of clusters. It reads the matrix from a TSV file
 and plots the Elbow curve to visualize the optimal number of clusters.
 The optimal number of clusters is saved to a text file.
 
@@ -76,10 +77,10 @@ def elbow_method(matrix, max_k, plot_file, output_file):
     plt.ylabel('Distortion')
     plt.title('The Elbow Method showing the optimal k')
     plt.vlines(optimal_k, plt.ylim()[0], plt.ylim()[1], linestyles='dashed', colors='r')
-    
+
     # Apply Arcadia figure formatting
     apc.mpl.style_plot()
-    
+
     plt.savefig(plot_file, format='svg')
 
     with open(output_file, 'w') as f:
