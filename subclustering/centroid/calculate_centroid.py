@@ -47,7 +47,7 @@ def parse_args():
 
 def calculate_arithmetic_mean(tm_scores, protein_names):
     row_means = [np.mean(scores) if scores else np.nan for scores in tm_scores]
-    centroid = np.mean(row_means)
+    centroid = np.nanmean(row_means)
     closest_index, closest_score = find_closest_to_centroid(row_means, centroid)
     lowest_index, lowest_score = find_lowest(row_means)
     highest_index, highest_score = find_highest(row_means)

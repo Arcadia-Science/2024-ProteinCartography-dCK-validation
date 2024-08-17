@@ -15,7 +15,7 @@ The optimal number of clusters is saved to a text file.
 Usage:
 python run_elbow_method.py \
 --matrix-tsv /path/to/matrix.tsv \
---plot-file /path/to/output/elbow_plot.png \
+--plot-file /path/to/output/elbow_plot.svg \
 --output-file /path/to/output/optimal_clusters.txt \
 --max-k 10
 
@@ -32,7 +32,7 @@ def parse_args():
         help="Path to the TSV file containing the TM-score matrix.",
     )
     parser.add_argument(
-        "-p", "--plot-file", required=True, help="Path to the output PNG file for the Elbow plot."
+        "-p", "--plot-file", required=True, help="Path to the output SVG file for the Elbow plot."
     )
     parser.add_argument(
         "-o",
