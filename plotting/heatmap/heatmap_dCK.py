@@ -12,7 +12,7 @@ and generates a heatmap along with secondary labels. The script uses pandas to r
 the data and seaborn to create the heatmap.
 
 To run the script, use the command:
-python heatmap_dCK.py -f input_file -o output_file.
+python heatmap_dCK.py -f input_file.tsv -o output_file.svg
 
 The first draft of this script was prepared with ChatGPT.
 """
@@ -24,13 +24,13 @@ def parse_args():
         "-f",
         "--input-file",
         required=True,
-        help="Path to input file.",
+        help="Path to input TSV file.",
     )
     parser.add_argument(
         "-o",
         "--output-file",
         required=True,
-        help="Path to output TSV file.",
+        help="Path to output SVG file.",
     )
     args = parser.parse_args()
     return args

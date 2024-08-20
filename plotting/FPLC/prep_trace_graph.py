@@ -10,7 +10,7 @@ and generates a simple line plot. The script uses pandas to read the data
 and matplotlib to create the plot.
 
 To run the script, use the command:
-python prep_trace_graph.py -f input_file -o output_file
+python prep_trace_graph.py -f input_file.tsv -o output_file.svg
 
 The first draft of this script was prepared with ChatGPT.
 """
@@ -22,7 +22,7 @@ def parse_args():
         "-f",
         "--input-file",
         required=True,
-        help="Path to input TSV file containing two columns.",
+        help="Path to input TSV file.",
     )
     parser.add_argument(
         "-o",

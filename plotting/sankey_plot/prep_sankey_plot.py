@@ -9,7 +9,7 @@ and generates a Sankey diagram as a PNG file. The script uses pandas to read the
 and plotly to create the diagram.
 
 To run the script, use the command:
-python prep_sankey_plot.py -f input_file -o output_file.
+python prep_sankey_plot.py -f input_file.tsv -o output_file.svg
 
 The first draft of this script was prepared with ChatGPT.
 """
@@ -21,13 +21,13 @@ def parse_args():
         "-f",
         "--input-file",
         required=True,
-        help="Path to input file.",
+        help="Path to input TSV file.",
     )
     parser.add_argument(
         "-o",
         "--output-file",
         required=True,
-        help="Path to output TSV file.",
+        help="Path to output SVG file.",
     )
     args = parser.parse_args()
     return args
