@@ -5,22 +5,26 @@ import numpy as np
 import pandas as pd
 
 """
-This script calculates the centroid TM-score for given groups of proteins
-based on their comparison matrix provided in a TSV file. It then identifies
-the protein that is closest to this centroid TM-score, as well as
-the TM-scores that are farthest below and above the centroid. The script outputs the
-results to two TSV files grouped by clusters specified in an additional TSV file.
+This script calculates the centroid TM-score for clusters of proteins
+based on their comparison matrix provided in a TSV file. The cluster
+labels are provided with the leiden_features.tsv file, which is an output
+of ProteinCartography. The comparison matrix is also an output file of
+ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these
+input files are provided in this repository under the
+/subclustering/input_files/ folder.
+
+The script identifies the protein that is closest to this centroid TM-score,
+as well as the TM-scores/proteins that are farthest below and above the centroid.
+The script outputs the results to two TSV files grouped by clusters specified
+by the leiden_features.tsv file.
 
 Usage:
 python calculate_centroid.py \
---matrix-tsv /path/to/tm_scores/matrix/file.tsv \
---cluster-tsv /path/to/LC/labels/file.tsv \
+--matrix-tsv /path/to/all_by_all_tmscore_pivoted.tsv \
+--cluster-tsv /path/to/leiden_features.tsv \
 --output-folder /path/to/output/folder/for/TSV/files/
 
-Arguments:
--m, --matrix-tsv: Path to the input TSV file containing the TM-score matrix.
--c, --cluster-tsv: Path to the TSV file with the LC labels (columns "protid" and "LeidenCluster").
--o, --output-folder: Path to the output folder where the results will be written.
+The first draft of this script was prepared with chatGPT.
 """
 
 
@@ -36,7 +40,7 @@ def parse_args():
         "-c",
         "--cluster-tsv",
         required=True,
-        help="Path to the TSV file containing protein clusters.",
+        help="Path to the TSV file containing the Leiden Cluster labels.",
     )
     parser.add_argument(
         "-o", "--output-folder", required=True, help="Path to the folder for the output TSV files."
