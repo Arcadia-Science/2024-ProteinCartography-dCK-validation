@@ -4,11 +4,13 @@
 
 ## Purpose
 
-This repo accompanies the pub on ProteinCartography validation using the dCK protein family (DOI: https://doi.org/10.57844/arcadia-a757-3651).
+This repo accompanies the pub on ProteinCartography validation using the Deoxycytidine Kinase protein family (https://doi.org/10.57844/arcadia-a757-3651). ProteinCartography is a bioinformatic pipeline that groups proteins based on their predicted structures. It searches for proteins that are similar to an input structure and prepares an interactive map with the clustering information. For more information on the pipeline, check out the pub describing the capabilities of ProteinCartography (https://doi.org/10.57844/ARCADIA-A5A6-1068) and the ProteinCartography GitHub repo (https://github.com/Arcadia-Science/ProteinCartography/releases/tag/v0.5.0). In our previous pub related to this work, we describe in detail why we chose to use the Deoxycytidine Kinase protein family for this analysis using several different criteria (https://doi.org/10.57844/arcadia-1e5d-e272). As part of this pub, we analyzed the resulting clusters and proposed a tentative strategy for selecting individual clusters and proteins to bring into the lab for biochemical studies of their function.
 
-The analyses include ProteinCartography cluster subclustering to identify representative proteins for biochemical validation in the lab. These scripts are under the `subclustering` folder.
+In the current pub (https://doi.org/10.57844/arcadia-a757-3651), we chose several proteins in the Deoxycytidine Kinase family. These were selected from different ProteinCartography clusters to bring into the lab. Our goal is to biochemically characterize the enzymatic activity of these proteins and understand how their activity profiles correlate with the structural groupings produced by ProteinCartography. Our findings could help us better understand the relationship between protein structure and function. Additionally, we could use the results to optimize and improve the performance of ProteinCartography. The scripts in this pub helped us identify the proteins to bring into the lab for our empirical studies. Additionally, we have also included the scripts used to prepare the plots in the pub.
 
-There are also additional scripts included that were used to prepare the figures in the publication. These scripts are under the `plotting` folder
+The analyses include subclustering of ProteinCartography clusters to identify representative proteins for biochemical validation in the lab. These scripts are under the `subclustering` folder.
+
+There are also additional scripts included that were used to prepare the figures in the publication. These scripts are under the `plotting` folder.
 
 ## Installation and Setup
 
@@ -42,9 +44,9 @@ conda activate dev
 
 ## Data
 
-The scripts could be run with the included data files under each of the analysis folders to reproduce the results. For the `subclustering` folder, these can be found in the `input_files` directory. The plots can also be produced using the provided data files for each type of plot under the `plotting` folder.
+The scripts could be run with the included data files under each of the analysis folders to reproduce the results. For the `subclustering` folder, these can be found in the `input_files` directory. These data files were generated in our ProteinCartography run and can also be found in this [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
 
-We have all of our data that was part of this pub on Zenodo here - LINK TO ZENODO DATABASE
+The plots can also be produced using the provided data files for each type of plot under the `plotting` folder. The data under the `FPLC` subfolder were generated in our lab during the biochemical characterization of our selected proteins. The data under the remaining two folders, `heatmap` and `sankey_plot`, were generated through a literature search for biochemically characterized proteins in the Deoxycytidine Kinase protein family. We extracted these data from the review article “Non-Viral Deoxyribonucleoside Kinases – Diversity and Practical Use” (https://doi.org/10.1016/j.jgg.2015.01.003).
 
 ## Overview
 
@@ -79,7 +81,7 @@ Below we have provided a directory map, the scripts and data files, as well as t
     ```
 - **input_files**
   - Two input files used by `calculate_centroid.py`, `run_elbow_method.py`, and `run_k_means_clustering.py`:
-    - These files are produced by the ProteinCartography pipeline and can also be found in the [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
+    - These files are produced by the ProteinCartography pipeline and can also be found in this [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
     - `all_by_all_tmscore_pivoted.tsv`
     - `leiden_features.tsv`
 
