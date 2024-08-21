@@ -12,7 +12,8 @@ and generates a heatmap along with secondary labels. The script uses pandas to r
 the data and seaborn to create the heatmap.
 
 To run the script, use the command:
-python heatmap_dCK.py -f input_file.tsv -o output_file.svg
+cd plotting/heatmap/
+python prep_heatmap.py -f input_file.tsv -o output_file.svg
 
 The first draft of this script was prepared with ChatGPT.
 """

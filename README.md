@@ -4,9 +4,9 @@
 
 ## Purpose
 
-This repo accompanies the pub on ProteinCartography validation using the dCK protein family (DOI: https://doi.org/10.57844/arcadia-a757-3651)
+This repo accompanies the pub on ProteinCartography validation using the dCK protein family (DOI: https://doi.org/10.57844/arcadia-a757-3651).
 
-The analyses include Leiden Cluster subclustering to identify representative proteins for biochemicaly validation in the lab. These scripts are under the `subclustering` folder.
+The analyses include ProteinCartography cluster subclustering to identify representative proteins for biochemical validation in the lab. These scripts are under the `subclustering` folder.
 
 There are also additional scripts included that were used to prepare the figures in the publication. These scripts are under the `plotting` folder
 
@@ -15,8 +15,8 @@ There are also additional scripts included that were used to prepare the figures
 This repository uses conda to manage software environments and installations. You can find operating system-specific instructions for installing miniconda [here](https://docs.conda.io/projects/miniconda/en/latest/). After installing conda and [mamba](https://mamba.readthedocs.io/en/latest/), run the following command to create the pipeline run environment.
 
 ```{bash}
-mamba env create -n PC_validation --file envs/dev.yml
-conda activate PC_validation
+mamba env create -n dev --file envs/dev.yml
+conda activate dev
 ```
 
 <details><summary>Developer Notes (click to expand/collapse)</summary>
@@ -42,7 +42,7 @@ conda activate PC_validation
 
 ## Data
 
-The scripts could be run with the included data files under each of the analysis folders. These can be found under the `subclustering` folder. The plots can also be produced using the provided data files for each type of plot under the `plotting` folder.
+The scripts could be run with the included data files under each of the analysis folders to reproduce the results. For the `subclustering` folder, these can be found in the `input_files` directory. The plots can also be produced using the provided data files for each type of plot under the `plotting` folder.
 
 We have all of our data that was part of this pub on Zenodo here - LINK TO ZENODO DATABASE
 
@@ -50,15 +50,95 @@ We have all of our data that was part of this pub on Zenodo here - LINK TO ZENOD
 
 ### Description of the folder structure
 
-There are two main folders with scripts and input files. The `subclustering` folder which contains the scripts for our analysis to choose representative proteins from each Leiden Cluster. And there is the `plotting` folder that contains the scripts we used to prepare any plots and graphs.
+There are two main folders with scripts and input files. The `subclustering` folder which contains the scripts for our analyses to choose representative proteins from each ProteinCartography cluster. The `plotting` folder that contains the scripts we used to prepare any plots and graphs.
+
+The `envs` is another directory in the repo. It contains the environment packages that were used for our analyses. Follow the instructions above to create your `conda` environment using the `dev.yml` file in this directory.
+
+Below we have provided a directory map, the scripts and data files, as well as the commands to run each script.
+
+## Directory Map
+
+### subclustering
+- **centroid**
+  - Script: `calculate_centroid.py`
+  - Usage:
+    ```{bash}
+    cd subclustering/centroid/
+    python calculate_centroid.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o data_folder/
+    ```
+- **kmeans**
+  - Scripts: `run_elbow_method.py`, `run_k_means_clustering.py`
+  - Usage:
+    ```{bash}
+    cd subclustering/kmeans/
+    python run_elbow_method.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -p plots_folder/ -o data_folder/
+    ```
+    ```{bash}
+    cd subclustering/kmeans/
+    python run_k_means_clustering.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o representatives.tsv -e kclusters.tsv
+    ```
+- **input_files**
+  - Two input files used by `calculate_centroid.py`, `run_elbow_method.py`, and `run_k_means_clustering.py`:
+    - These files are produced by the ProteinCartography pipeline and can also be found in the [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
+    - `all_by_all_tmscore_pivoted.tsv`
+    - `leiden_features.tsv`
+
+### plotting
+- **FPLC**
+  - Script: `prep_trace_graph.py`
+  - Sub-directories containing input data files:
+    - These data were generated with an FPLC instrument as part of size exclusion chromatography analyses.
+    - `Standards/`
+        File: `SEC_standards.tsv`
+    - `human_dCK_P27707/`
+      - File: `P27707_SEC.tsv`
+    - `Antarctic_cod_A0A7J5YK87/`
+      - File: `A0A7J5YK87_SEC.tsv`
+    - `Almond_A0A4Y1QVV5/`
+      - File: `A0A4Y1QVV5_SEC.tsv`
+    - `Field_mustard_A0A3P6ASY1/`
+      - File: `A0A3P6ASY1_SEC.tsv`
+    - `Rickettsiales_A0A2A5BCG8/`
+      - File: `A0A2A5BCG8_SEC.tsv`
+  - Usage:
+    ```{bash}
+    cd plotting/FPLC/
+    python prep_trace_graph.py -f Standards/SEC_standards.tsv -o plot_stadards.svg
+    python prep_trace_graph.py -f human_dCK_P27707/P27707_SEC.tsv -o plot_P27707.svg
+    python prep_trace_graph.py -f Antarctic_cod_A0A7J5YK87/A0A7J5YK87_SEC.tsv -o plot_A0A7J5YK87.svg
+    python prep_trace_graph.py -f Almond_A0A4Y1QVV5/A0A4Y1QVV5_SEC.tsv -o plot_A0A4Y1QVV5.svg
+    python prep_trace_graph.py -f Field_mustard_A0A3P6ASY1/A0A3P6ASY1_SEC.tsv -o plot_A0A3P6ASY1.svg
+    python prep_trace_graph.py -f Rickettsiales_A0A2A5BCG8/A0A2A5BCG8_SEC.tsv -o plot_A0A2A5BCG8.svg
+    ```
+- **heatmap**
+  - Script: `prep_heatmap.py`
+  - Input data file: `dNKs_activities.tsv`
+    - Data sourced from the review article [Non-Viral Deoxyribonucleoside Kinases – Diversity and Practical Use](https://doi.org/10.1016/j.jgg.2015.01.003).
+    - Represents activities of biochemically characterized enzymes in the Deoxynucleoside Kinase family.
+  - Usage:
+    ```{bash}
+    cd plotting/heatmap/
+    python prep_heatmap.py -f dNKs_activities.tsv -o heatmap.svg
+    ```
+- **sankey_plot**
+  - Script: `prep_sankey_plot.py`
+  - Input data file: `sankey_data.tsv`
+    - Data are a combination of the enzyme activity data from the `heatmap` directory and the clustering results from our ProteinCartography analysis.
+  - Usage:
+    ```{bash}
+    cd plotting/sankey_plot/
+    python prep_sankey_plot.py -f sankey_data.tsv -o sankey_plot.svg
+    ```
+
+### envs
+- **Environment file**
+  - `dev.yml`
 
 ### Methods
 
-The scripts in the repo are relatively easy to use with sufficient level of comments.
-
 There are three sets of scripts in the `subclustering` folder.
 
-Under each of the `centroid`, `kmeans`, and `foldseek` folders are the scripts used to run each subclustering method. For the K-Means and the Foldseek subclustering methods, there are two separate scripts that use slightly different methodologies to subcluster and select representative proteins. For example, we have one script that uses Euclidean distances and a second script that uses arithmetic mean distances to perform the K-Means analysis. Similarly, we have one script that uses the 3Di alphabet and a second script that uses the typical amino acid letters to perform the Foldseek analysis. Each of these scripts is provided under appropriately named folders.
+Under the `centroid` and `kmeans` folders are the scripts used to run each subclustering method. For the K-Means and the Foldseek subclustering methods, there are two separate scripts that use slightly different methodologies to subcluster and select representative proteins. For example, we have one script that uses Euclidean distances and a second script that uses arithmetic mean distances to perform the K-Means analysis. Similarly, we have one script that uses the 3Di alphabet and a second script that uses the typical amino acid letters to perform the Foldseek analysis. Each of these scripts is provided under appropriately named folders.
 
 Under the `kmeans` folder, there is also the `elbow_method` folder that has the `run_elbow_method.py` script. We used this script to determine the number of optimal k-clusters for running the K-Means clustering algorithm. There is also an additional script called `prep_submatrices.py` that helps prepare the input file for the elbow method script.
 

@@ -19,10 +19,11 @@ The script outputs the results to two TSV files grouped by clusters specified
 by the leiden_features.tsv file.
 
 Usage:
+cd subclustering/centroid/
 python calculate_centroid.py \
---matrix-tsv /path/to/all_by_all_tmscore_pivoted.tsv \
---cluster-tsv /path/to/leiden_features.tsv \
---output-folder /path/to/output/folder/for/TSV/files/
+--matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
+--cluster-tsv ../input_files/leiden_features.tsv \
+--output-folder data_folder/
 
 The first draft of this script was prepared with chatGPT.
 """
@@ -34,13 +35,13 @@ def parse_args():
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the TM-score matrix.",
+        help="Path to the TSV file containing the comparison matrix.",
     )
     parser.add_argument(
         "-c",
         "--cluster-tsv",
         required=True,
-        help="Path to the TSV file containing the Leiden Cluster labels.",
+        help="Path to the TSV file containing the cluster labels.",
     )
     parser.add_argument(
         "-o", "--output-folder", required=True, help="Path to the folder for the output TSV files."

@@ -10,6 +10,7 @@ and generates a simple line plot. The script uses pandas to read the data
 and matplotlib to create the plot.
 
 To run the script, use the command:
+cd plotting/FPLC/
 python prep_trace_graph.py -f input_file.tsv -o output_file.svg
 
 The first draft of this script was prepared with ChatGPT.
@@ -47,8 +48,8 @@ def create_plot(input_file, output_file):
     plt.plot(data.iloc[:, 0], data.iloc[:, 1], linestyle="-")
 
     # Apply x-axis and y-axis labels
-    plt.xlabel("Elution volume (ml)", fontsize=15, fontname="Suisse Int'l")
-    plt.ylabel("Relative absorbance units", fontsize=15, fontname="Suisse Int'l")
+    plt.xlabel("Elution volume (ml)", fontsize=15)
+    plt.ylabel("Relative absorbance units", fontsize=15)
 
     # Get the current axis
     ax = plt.gca()
