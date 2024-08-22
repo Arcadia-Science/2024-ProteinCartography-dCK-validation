@@ -1,5 +1,6 @@
 import argparse
 
+import arcadia_pycolor as apc
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -52,24 +53,27 @@ def create_sankey_diagram(input_file, output_file):
     values = [1] * len(sources)
 
     color_mapping = {
-        "dNK": "#F28360",
-        "TK": "#FFCFAF",
-        "TK1": "#FFCFAF",
-        "TK2": "#FFCFAF",
-        "TK1a": "#FFCFAF",
-        "TK1b": "#FFCFAF",
-        "dCK": "#FFB883",
-        "dCK2": "#FFB883",
-        "dAK": "#C85152",
-        "dGK": "#9E3F41",
-        "LC00": "#635C5A",
-        "LC02": "#8F8885",
-        "LC03": "#B9AFA7",
-        "LC05": "#DBD1C3",
-        "LC06": "#EDE6DA",
-        "LC07": "#FFFFFF",
+        "dNK": apc.azalea.hex_code,
+        "TK": apc.putty.hex_code,
+        "TK1": apc.putty.hex_code,
+        "TK2": apc.putty.hex_code,
+        "TK1a": apc.putty.hex_code,
+        "TK1b": apc.putty.hex_code,
+        "dCK": apc.candy.hex_code,
+        "dCK2": apc.candy.hex_code,
+        "dAK": apc.dragon.hex_code,
+        "dGK": apc.cinnabar.hex_code,
+        "LC00": apc.mud.hex_code,
+        "LC02": apc.bark.hex_code,
+        "LC03": apc.charcoal.hex_code,
+        "LC05": apc.taupe.hex_code,
+        "LC06": apc.stone.hex_code,
+        "LC07": apc.white.hex_code,
     }
-    colors = [color_mapping.get(label, "rgba(127, 127, 127, 0.8)") for label in labels]
+
+    # Create the colors list, using the fallback color when a label is not found in the dictionary
+    fallback_color = apc.ice.hex_code
+    colors = [color_mapping.get(label, fallback_color) for label in labels]
 
     fig = go.Figure(
         data=[

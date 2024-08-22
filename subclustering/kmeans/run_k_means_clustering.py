@@ -94,17 +94,20 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     headers_kc = []
     data = []
 
+    # Specify the number of k-clusters
+    cluster_count = 3
+
     for leiden_cluster, group in leiden_groups:
         protein_names = group["protid"].tolist()
 
         protein_df = df_matrix.loc[protein_names, protein_names]
-        kmeans = KMeans(n_clusters=3, random_state=0)
+        kmeans = KMeans(n_clusters=cluster_count, random_state=0)
         kmeans.fit(protein_df)
         clusters = kmeans.labels_
 
         rows_to_append = []
 
-        for i in range(3):
+        for i in range(cluster_count):
             cluster_data = protein_df.iloc[clusters == i, :]
             mean_calc_df = cluster_data.replace([1.0, 0.0], np.nan)
 
