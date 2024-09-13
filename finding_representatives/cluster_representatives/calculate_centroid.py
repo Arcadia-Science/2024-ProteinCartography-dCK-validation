@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 """
-This script identifies representative proteins for each cluster by 
+This script identifies representative proteins for each cluster by
 finding the protein that has the highest TM-score average in each cluster,
 or the protein in the cluster that is the most similar to all other proteins.
 The cluster labels are in the leiden_features.tsv file, which is an output

@@ -104,7 +104,9 @@ def create_heatmap(input_file, output_file):
     cbar.ax.tick_params(length=0)
 
     # Adjust subplot parameters
-    plt.subplots_adjust(left=0.193, right=0.33, bottom=0.11, top=0.88, wspace=0.998, hspace=0.2)
+    plt.subplots_adjust(
+        left=0.193, right=0.33, bottom=0.11, top=0.88, wspace=0.998, hspace=0.2
+    )
 
     # Apply Arcadia figure formatting
     apc.mpl.setup()

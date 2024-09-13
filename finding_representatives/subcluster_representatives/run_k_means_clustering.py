@@ -5,11 +5,11 @@ from sklearn.cluster import KMeans
 
 """
 This script processes a similarity matrix file and a ProteinCartography cluster file to perform
-k-means clustering on each cluster. The script identifies the protein with the highest average 
-TM-score for each k-means cluster. The cluster labels are provided with the leiden_features.tsv file, 
-which is an output of ProteinCartography. The comparison matrix is also an output file of ProteinCartography 
-called all_by_all_tmscore_pivoted.tsv. Both of these input files are provided in this repository 
-under the /subclustering/input_files/ folder.
+k-means clustering on each cluster. The script identifies the protein with the highest average
+TM-score for each k-means cluster. The cluster labels are provided with the leiden_features.tsv
+file, which is an output of ProteinCartography. The comparison matrix is also an output file of
+ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these input files are provided
+in this repository under the /subclustering/input_files/ folder.
 
 The output consists of two TSV files:
 1. A file displaying the protein with the highest average TM-score for each cluster.
@@ -25,34 +25,36 @@ python run_k_means_clustering.py \
 --output-file2 kclusters.tsv
 """
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the comparison matrix."
+        help="Path to the TSV file containing the comparison matrix.",
     )
     parser.add_argument(
         "-c",
         "--cluster-tsv",
         required=True,
-        help="Path to the TSV file containing the cluster labels."
+        help="Path to the TSV file containing the cluster labels.",
     )
     parser.add_argument(
         "-o",
         "--output-file1",
         required=True,
-        help="Path to the output TSV file showing the highest average TM-score and corresponding proteins."
+        help="Path to the output TSV file showing the highest average TM-score and corresponding proteins.",
     )
     parser.add_argument(
         "-e",
         "--output-file2",
         required=True,
-        help="Path to the output TSV file showing the proteins in each k-means cluster."
+        help="Path to the output TSV file showing the proteins in each k-means cluster.",
     )
     args = parser.parse_args()
     return args
+
 
 def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
@@ -63,7 +65,7 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
         "LeidenCluster",
         "KMeansCluster",
         "HighestProtein",
-        "HighestScore"
+        "HighestScore",
     ]
     output_df = pd.DataFrame(columns=output_columns)
 
@@ -93,14 +95,16 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
                 "LeidenCluster": leiden_cluster,
                 "KMeansCluster": f"KC{i}",
                 "HighestProtein": highest_protein,
-                "HighestScore": highest_score
+                "HighestScore": highest_score,
             }
             rows_to_append.append(row)
             headers_lc.extend([leiden_cluster])
             headers_kc.extend([f"KC{i}"])
             data.append([p for p in cluster_data.index])
 
-        output_df = pd.concat([output_df, pd.DataFrame(rows_to_append)], ignore_index=True)
+        output_df = pd.concat(
+            [output_df, pd.DataFrame(rows_to_append)], ignore_index=True
+        )
 
     output_df.to_csv(output_file1, sep="\t", index=False)
 
@@ -112,9 +116,13 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
             row = [d[i] if i < len(d) else "" for d in data]
             f.write("\t".join(row) + "\n")
 
+
 def main():
     args = parse_args()
-    run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2)
+    run_kmeans_clustering(
+        args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2
+    )
+
 
 if __name__ == "__main__":
     main()

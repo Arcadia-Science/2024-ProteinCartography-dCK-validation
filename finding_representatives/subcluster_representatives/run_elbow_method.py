@@ -9,8 +9,8 @@ from sklearn.cluster import KMeans
 
 """
 This script splits a similarity matrix into sub-matrices based on cluster labels from
-the ProteinCartography output file, leiden_features.tsv. The similarity matrix is also an 
-output file of ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these 
+the ProteinCartography output file, leiden_features.tsv. The similarity matrix is also an
+output file of ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these
 input files are provided in this repository under the /subclustering/input_files/ folder.
 
 The script also passes each sub-matrix through a k-means clustering algorithm to determine the
@@ -136,5 +136,9 @@ def process_sub_matrices(matrix_tsv, cluster_tsv, plot_folder, output_folder, ma
 if __name__ == "__main__":
     args = parse_args()
     process_sub_matrices(
-        args.matrix_tsv, args.cluster_tsv, args.plot_folder, args.output_folder, args.max_k
+        args.matrix_tsv,
+        args.cluster_tsv,
+        args.plot_folder,
+        args.output_folder,
+        args.max_k,
     )
