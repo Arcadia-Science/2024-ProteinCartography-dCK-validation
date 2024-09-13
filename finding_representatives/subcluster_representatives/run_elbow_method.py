@@ -8,13 +8,12 @@ from kneed import KneeLocator
 from sklearn.cluster import KMeans
 
 """
-This script splits a comparison matrix into sub-matrices based on unique cluster labels from
-a cluster information file. The cluster labels are provided with the leiden_features.tsv
-file, which is an output of ProteinCartography. The comparison matrix is also an output file of
-ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these input files are provided
-in this repository under the /subclustering/input_files/ folder.
+This script splits a similarity matrix into sub-matrices based on cluster labels from
+the ProteinCartography output file, leiden_features.tsv. The similarity matrix is also an 
+output file of ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these 
+input files are provided in this repository under the /subclustering/input_files/ folder.
 
-The script passes each sub-matrix through a k-means clustering algorithm to determine the
+The script also passes each sub-matrix through a k-means clustering algorithm to determine the
 optimal number of clusters using the Elbow method. The Elbow plot and the optimal number of
 clusters for each sub-matrix are saved as output files.
 
@@ -36,7 +35,7 @@ def parse_args():
         "-m",
         "--matrix-tsv",
         required=True,
-        help="Path to the TSV file containing the comparison matrix.",
+        help="Path to the TSV file containing the similarity matrix.",
     )
     parser.add_argument(
         "-c",

@@ -7,7 +7,8 @@ import pandas as pd
 """
 This script reads a TSV file containing two columns, processes the data,
 and generates a simple line plot. The script uses pandas to read the data
-and matplotlib to create the plot.
+and matplotlib to create the plot. We used this script to create traces of
+the FPLC data.
 
 To run the script, use the command:
 cd plotting/FPLC/

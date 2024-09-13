@@ -5,18 +5,14 @@ import numpy as np
 import pandas as pd
 
 """
-This script calculates the centroid TM-score for clusters of proteins
-based on their comparison matrix provided in a TSV file. The cluster
-labels are provided with the leiden_features.tsv file, which is an output
-of ProteinCartography. The comparison matrix is also an output file of
+This script identifies representative proteins for each cluster by 
+finding the protein that has the highest TM-score average in each cluster,
+or the protein in the cluster that is the most similar to all other proteins.
+The cluster labels are in the leiden_features.tsv file, which is an output
+of ProteinCartography. The similarity matrix is also an output file of
 ProteinCartography called all_by_all_tmscore_pivoted.tsv. Both of these
-input files are provided in this repository under the
+input files for this analysis are provided in this repository under the
 /subclustering/input_files/ folder.
-
-The script identifies the protein that is closest to this centroid TM-score,
-as well as the TM-scores/proteins that are farthest below and above the centroid.
-The script outputs the results to two TSV files grouped by clusters specified
-by the leiden_features.tsv file.
 
 Usage:
 cd subclustering/centroid/
@@ -44,7 +40,10 @@ def parse_args():
         help="Path to the TSV file containing the cluster labels.",
     )
     parser.add_argument(
-        "-o", "--output-folder", required=True, help="Path to the folder for the output TSV files."
+        "-o",
+        "--output-folder",
+        required=True,
+        help="Path to the folder for the output TSV files.",
     )
     args = parser.parse_args()
     return args
@@ -52,36 +51,14 @@ def parse_args():
 
 def calculate_arithmetic_mean(tm_scores, protein_names):
     row_means = [np.mean(scores) if scores else np.nan for scores in tm_scores]
-    centroid = np.nanmean(row_means)
-    closest_index, closest_score = find_closest_to_centroid(row_means, centroid)
-    lowest_index, lowest_score = find_lowest(row_means)
     highest_index, highest_score = find_highest(row_means)
     results = [
         [
-            centroid,
-            protein_names[closest_index],
-            closest_score,
-            protein_names[lowest_index],
-            lowest_score,
             protein_names[highest_index],
             highest_score,
         ]
     ]
     return results
-
-
-def find_closest_to_centroid(row_means, centroid):
-    valid_indices = [i for i, score in enumerate(row_means) if not np.isnan(score)]
-    closest_index = min(valid_indices, key=lambda i: abs(row_means[i] - centroid))
-    closest_score = row_means[closest_index]
-    return closest_index, closest_score
-
-
-def find_lowest(row_means):
-    valid_indices = [i for i, score in enumerate(row_means) if not np.isnan(score)]
-    lowest_index = min(valid_indices, key=lambda i: row_means[i])
-    lowest_score = row_means[lowest_index]
-    return lowest_index, lowest_score
 
 
 def find_highest(row_means):
@@ -100,7 +77,9 @@ def read_clusters(cluster_tsv):
     cluster_df = pd.read_csv(cluster_tsv, sep="\t")
     clusters = {}
     for cluster in sorted(cluster_df["LeidenCluster"].unique()):
-        clusters[cluster] = cluster_df[cluster_df["LeidenCluster"] == cluster]["protid"].tolist()
+        clusters[cluster] = cluster_df[cluster_df["LeidenCluster"] == cluster][
+            "protid"
+        ].tolist()
     return clusters
 
 
@@ -114,11 +93,13 @@ def compute_results(args):
     clusters = read_clusters(args.cluster_tsv)
 
     combined_data = []
-    arithmetic_mean_data = []
+    # arithmetic_mean_data = []
 
     for cluster in sorted(clusters.keys()):
         proteins = clusters[cluster]
-        valid_proteins = [protein for protein in proteins if protein in tm_scores_df.index]
+        valid_proteins = [
+            protein for protein in proteins if protein in tm_scores_df.index
+        ]
 
         # Step 1: Filter the columns based on the valid proteins
         filtered_tm_scores_df_columns = tm_scores_df[valid_proteins]
@@ -137,26 +118,22 @@ def compute_results(args):
             cluster_tm_scores.append(row_scores)
 
         # Calculate means without converting to a single numpy array
-        arithmetic_results = calculate_arithmetic_mean(cluster_tm_scores, valid_proteins)
-        arithmetic_mean_data.extend([[cluster] + res[1:] for res in arithmetic_results])
+        arithmetic_results = calculate_arithmetic_mean(
+            cluster_tm_scores, valid_proteins
+        )
+        highest_protein, highest_score = arithmetic_results[0]
 
-        combined_data.append([cluster, arithmetic_results[0][0]])
+        combined_data.append([cluster, highest_protein, highest_score])
 
     output_folder = Path(args.output_folder)
     output_folder.mkdir(parents=True, exist_ok=True)
 
-    write_tsv(output_folder, "combined.tsv", combined_data, ["Cluster", "Arithmetic Mean"])
-
     write_tsv(
         output_folder,
-        "arithmetic_mean.tsv",
-        arithmetic_mean_data,
+        "cluster_representatives.tsv",
+        combined_data,
         [
             "Cluster",
-            "Closest Protein",
-            "TM-score",
-            "Lowest Protein",
-            "TM-score",
             "Highest Protein",
             "TM-score",
         ],
