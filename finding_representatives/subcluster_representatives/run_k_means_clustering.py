@@ -1,4 +1,5 @@
 import argparse
+
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -44,7 +45,7 @@ def parse_args():
         "-o",
         "--output-file1",
         required=True,
-        help="Path to the output TSV file showing the highest average TM-score and corresponding proteins.",
+        help="Path to output TSV file with highest average TM-scores and corresponding proteins.",
     )
     parser.add_argument(
         "-e",
