@@ -77,9 +77,7 @@ def read_clusters(cluster_tsv):
     cluster_df = pd.read_csv(cluster_tsv, sep="\t")
     clusters = {}
     for cluster in sorted(cluster_df["LeidenCluster"].unique()):
-        clusters[cluster] = cluster_df[cluster_df["LeidenCluster"] == cluster][
-            "protid"
-        ].tolist()
+        clusters[cluster] = cluster_df[cluster_df["LeidenCluster"] == cluster]["protid"].tolist()
     return clusters
 
 
@@ -97,9 +95,7 @@ def compute_results(args):
 
     for cluster in sorted(clusters.keys()):
         proteins = clusters[cluster]
-        valid_proteins = [
-            protein for protein in proteins if protein in tm_scores_df.index
-        ]
+        valid_proteins = [protein for protein in proteins if protein in tm_scores_df.index]
 
         # Step 1: Filter the columns based on the valid proteins
         filtered_tm_scores_df_columns = tm_scores_df[valid_proteins]
@@ -118,9 +114,7 @@ def compute_results(args):
             cluster_tm_scores.append(row_scores)
 
         # Calculate means without converting to a single numpy array
-        arithmetic_results = calculate_arithmetic_mean(
-            cluster_tm_scores, valid_proteins
-        )
+        arithmetic_results = calculate_arithmetic_mean(cluster_tm_scores, valid_proteins)
         highest_protein, highest_score = arithmetic_results[0]
 
         combined_data.append([cluster, highest_protein, highest_score])
