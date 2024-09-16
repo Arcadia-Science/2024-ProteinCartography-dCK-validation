@@ -18,7 +18,7 @@ The output consists of two TSV files:
    and k-means clusters.
 
 Usage:
-cd subclustering/kmeans/
+cd finding_representatives/subcluster_representatives/
 python run_k_means_clustering.py \
 --matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
 --cluster-tsv ../input_files/leiden_features.tsv \
@@ -103,7 +103,9 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
             headers_kc.extend([f"KC{i}"])
             data.append([p for p in cluster_data.index])
 
-        output_df = pd.concat([output_df, pd.DataFrame(rows_to_append)], ignore_index=True)
+        output_df = pd.concat(
+            [output_df, pd.DataFrame(rows_to_append)], ignore_index=True
+        )
 
     output_df.to_csv(output_file1, sep="\t", index=False)
 
@@ -118,7 +120,9 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
 
 def main():
     args = parse_args()
-    run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2)
+    run_kmeans_clustering(
+        args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2
+    )
 
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ optimal number of clusters using the Elbow method. The Elbow plot and the optima
 clusters for each sub-matrix are saved as output files.
 
 Usage:
-cd subclustering/kmeans/
+cd finding_representatives/subcluster_representatives/
 python run_elbow_method.py \
 --matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
 --cluster-tsv ../input_files/leiden_features.tsv \
