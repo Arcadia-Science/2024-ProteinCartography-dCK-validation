@@ -4,7 +4,17 @@ channels:
   - defaults
 dependencies:
   - jupyter=1.0.0
+  - numpy=1.26.0
+  - pandas=2.1.1
   - pip=23.2.1
+  - plotly=5.22.0
   - pre-commit=3.5.0
   - python=3.12.0
   - ruff=0.4.8
+  - seaborn=0.13.0
+  - pip:
+    - arcadia-pycolor==0.5.1
+    - kaleido==0.2.1
+    - kneed==0.8.5
+    - matplotlib==3.9.1
+    - scikit-learn==1.5.0
