@@ -51,7 +51,7 @@ conda activate dev
 After setting up the conda environment (see above), all scripts can be run in the correct order with a single command from the repo root:
 
 ```{bash}
-
+bash run_all.sh
 ```
 
 This runs every analysis and plotting script with the input files included in the repository. Outputs are written into `output/` subdirectories alongside each script. See the [Overview](#overview) section below for individual script usage and details on each step.
