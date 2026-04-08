@@ -91,7 +91,7 @@ def create_sankey_diagram(input_file, output_file):
     )
     fig.update_layout(
         title_text="Sankey Diagram",
-        # "Suisse Int'l Regular" is a commercial font; if not installed, plotly will substitute a default font.
+        # "Suisse Int'l Regular" is a commercial font; if not installed, plotly will substitute.
         font=dict(family="Suisse Int'l Regular", size=15),
         width=1000,
         height=800,

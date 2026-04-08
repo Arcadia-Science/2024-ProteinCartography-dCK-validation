@@ -75,8 +75,8 @@ def parse_args():
         "--k-folder",
         default=None,
         help="Folder containing run_elbow_method.py output files (one per Leiden cluster, e.g. "
-             "data_folder/). When provided, the optimal cluster count is read per Leiden cluster "
-             "from the corresponding file. Takes precedence over --cluster-count.",
+        "data_folder/). When provided, the optimal cluster count is read per Leiden cluster "
+        "from the corresponding file. Takes precedence over --cluster-count.",
     )
     parser.add_argument(
         "-n",
@@ -84,13 +84,20 @@ def parse_args():
         type=int,
         default=3,
         help="Number of k-means clusters applied to all Leiden clusters (default: 3, the value "
-             "used in the original analysis). Ignored when --k-folder is provided.",
+        "used in the original analysis). Ignored when --k-folder is provided.",
     )
     args = parser.parse_args()
     return args
 
 
-def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2, k_folder=None, cluster_count=3):
+def run_kmeans_clustering(
+    matrix_tsv,
+    cluster_tsv,
+    output_file1,
+    output_file2,
+    k_folder=None,
+    cluster_count=3,
+):
     df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
     df_leiden = pd.read_csv(cluster_tsv, sep="\t")
 
@@ -153,7 +160,14 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2, k
 
 def main():
     args = parse_args()
-    run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2, args.k_folder, args.cluster_count)
+    run_kmeans_clustering(
+        args.matrix_tsv,
+        args.cluster_tsv,
+        args.output_file1,
+        args.output_file2,
+        args.k_folder,
+        args.cluster_count,
+    )
 
 
 if __name__ == "__main__":
