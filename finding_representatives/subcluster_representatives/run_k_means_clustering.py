@@ -1,4 +1,5 @@
 import argparse
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -17,11 +18,27 @@ The output consists of two TSV files:
 2. A file organizing the proteins in each k-means cluster under their respective Leiden clusters
    and k-means clusters.
 
-Usage:
+Usage (reading per-cluster k from elbow method output):
 cd finding_representatives/subcluster_representatives/
+python run_elbow_method.py \
+--matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
+--cluster-tsv ../input_files/leiden_features.tsv \
+--plot-folder plots_folder/ \
+--output-folder data_folder/
+
 python run_k_means_clustering.py \
 --matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
 --cluster-tsv ../input_files/leiden_features.tsv \
+--k-folder data_folder/ \
+--output-file1 representatives.tsv \
+--output-file2 kclusters.tsv
+
+Alternatively, pass a single k value with --cluster-count (default: 3, the value used in the
+original analysis):
+python run_k_means_clustering.py \
+--matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
+--cluster-tsv ../input_files/leiden_features.tsv \
+--cluster-count 3 \
 --output-file1 representatives.tsv \
 --output-file2 kclusters.tsv
 """
@@ -53,11 +70,27 @@ def parse_args():
         required=True,
         help="Path to the output TSV file showing the proteins in each k-means cluster.",
     )
+    parser.add_argument(
+        "-k",
+        "--k-folder",
+        default=None,
+        help="Folder containing run_elbow_method.py output files (one per Leiden cluster, e.g. "
+             "data_folder/). When provided, the optimal cluster count is read per Leiden cluster "
+             "from the corresponding file. Takes precedence over --cluster-count.",
+    )
+    parser.add_argument(
+        "-n",
+        "--cluster-count",
+        type=int,
+        default=3,
+        help="Number of k-means clusters applied to all Leiden clusters (default: 3, the value "
+             "used in the original analysis). Ignored when --k-folder is provided.",
+    )
     args = parser.parse_args()
     return args
 
 
-def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
+def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2, k_folder=None, cluster_count=3):
     df_matrix = pd.read_csv(matrix_tsv, sep="\t", index_col=0)
     df_leiden = pd.read_csv(cluster_tsv, sep="\t")
 
@@ -74,9 +107,11 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
     headers_kc = []
     data = []
 
-    cluster_count = 3  # Number of k-means clusters
-
     for leiden_cluster, group in leiden_groups:
+        if k_folder is not None:
+            k_file = Path(k_folder) / f"{leiden_cluster}.txt"
+            with open(k_file) as f:
+                cluster_count = int(f.read().split(": ")[1])
         protein_names = group["protid"].tolist()
         protein_df = df_matrix.loc[protein_names, protein_names]
         kmeans = KMeans(n_clusters=cluster_count, random_state=0)
@@ -118,7 +153,7 @@ def run_kmeans_clustering(matrix_tsv, cluster_tsv, output_file1, output_file2):
 
 def main():
     args = parse_args()
-    run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2)
+    run_kmeans_clustering(args.matrix_tsv, args.cluster_tsv, args.output_file1, args.output_file2, args.k_folder, args.cluster_count)
 
 
 if __name__ == "__main__":

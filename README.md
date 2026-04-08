@@ -46,6 +46,16 @@ conda activate dev
     `--from-history` only exports packages that were explicitly added by you (e.g., the packages you installed with `pip` or `mamba`) and `--no-builds` removes build specification from the exported packages to increase portability between different platforms.
 </details>
 
+## Reproducing the Analysis
+
+After setting up the conda environment (see above), all scripts can be run in the correct order with a single command from the repo root:
+
+```{bash}
+
+```
+
+This runs every analysis and plotting script with the input files included in the repository. Outputs are written into `output/` subdirectories alongside each script. See the [Overview](#overview) section below for individual script usage and details on each step.
+
 ## Data
 
 The scripts in this repo can be run with the included data files under each of the analysis folders to reproduce the results. For the `finding_representatives` folder, these can be found in the `input_files` directory. These data files were generated in our ProteinCartography run and can also be found in this [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
@@ -80,12 +90,12 @@ Below we have provided a directory map, the scripts and data files, as well as t
 
 - **finding_representatives**
   - *cluster_representatives*
-    - Script: `find_cluster_representatives.py`
+    - Script: `find_cluster_representative.py`
     - Purpose: The scripts in this folder find the representatives from the overall ProteinCartography clusters. 
     - Usage:
       ```{bash}
       cd finding_representatives/cluster_representatives/
-      python find_cluster_representatives.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o data_folder/
+      python find_cluster_representative.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o data_folder/
       ```
   - *subcluster_representatives*
     - Scripts: `run_elbow_method.py`, `run_k_means_clustering.py`
@@ -97,8 +107,9 @@ Below we have provided a directory map, the scripts and data files, as well as t
       ```
       ```{bash}
       cd finding_representatives/subcluster_representatives/
-      python run_k_means_clustering.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o representatives.tsv -e kclusters.tsv
+      python run_k_means_clustering.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -k data_folder/ -o representatives.tsv -e kclusters.tsv
       ```
+      The `-k`/`--k-folder` argument points to the `run_elbow_method.py` output folder and automatically reads the optimal k for each Leiden cluster. Alternatively, pass a single value with `-n`/`--cluster-count` (default: 3, the value used in the original analysis).
   - *input_files*
     - Purpose: Input files used by the scripts in the `finding_representatives` directory can be found here. 
       - These files are produced by the ProteinCartography pipeline and can also be found in this [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
@@ -106,6 +117,8 @@ Below we have provided a directory map, the scripts and data files, as well as t
         - `all_by_all_tmscore_pivoted.tsv`
         - `leiden_features.tsv`
 - **plotting**
+
+  > **Note:** The heatmap and Sankey plot scripts use the commercial font "Suisse Int'l". If this font is not installed on your system, matplotlib and plotly will silently substitute a default font and the output figures will not exactly match the publication.
   - *FPLC*
     - Script: `prep_trace_graph.py`
     - Purpose: This folder contains a script to create FPLC traces and all of the necessary input data. 
@@ -125,7 +138,7 @@ Below we have provided a directory map, the scripts and data files, as well as t
     - Usage:
       ```{bash}
       cd plotting/FPLC/
-      python prep_trace_graph.py -f Standards/SEC_standards.tsv -o plot_stadards.svg
+      python prep_trace_graph.py -f Standards/SEC_standards.tsv -o plot_standards.svg
       python prep_trace_graph.py -f human_dCK_P27707/P27707_SEC.tsv -o plot_P27707.svg
       python prep_trace_graph.py -f Antarctic_cod_A0A7J5YK87/A0A7J5YK87_SEC.tsv -o plot_A0A7J5YK87.svg
       python prep_trace_graph.py -f Almond_A0A4Y1QVV5/A0A4Y1QVV5_SEC.tsv -o plot_A0A4Y1QVV5.svg

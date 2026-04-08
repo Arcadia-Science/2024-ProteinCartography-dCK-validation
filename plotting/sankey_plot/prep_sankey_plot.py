@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 
 """
 This script reads a TSV file containing data for a Sankey diagram, processes the data,
-and generates a Sankey diagram as a PNG file. The script uses pandas to read the data
+and generates a Sankey diagram as a SVG file. The script uses pandas to read the data
 and plotly to create the diagram.
 
 To run the script, use the command:
@@ -91,6 +91,7 @@ def create_sankey_diagram(input_file, output_file):
     )
     fig.update_layout(
         title_text="Sankey Diagram",
+        # "Suisse Int'l Regular" is a commercial font; if not installed, plotly will substitute a default font.
         font=dict(family="Suisse Int'l Regular", size=15),
         width=1000,
         height=800,
