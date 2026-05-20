@@ -84,6 +84,7 @@ def split_matrix_by_cluster(matrix_df, cluster_df):
 
 def elbow_method(matrix, max_k, plot_file, output_file):
     distortions = []
+    max_k = min(max_k, len(matrix))
     K = range(1, max_k + 1)
 
     for k in K:

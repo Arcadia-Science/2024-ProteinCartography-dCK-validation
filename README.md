@@ -4,15 +4,15 @@
 
 ## Purpose
 
-This repo accompanies the pub on [ProteinCartography validation using the Deoxycytidine Kinase protein family](https://doi.org/10.57844/arcadia-a757-3651). ProteinCartography is a bioinformatics pipeline that groups proteins based on their predicted structures. It searches for proteins that are similar to an input structure and prepares an interactive map with the clustering information. For more information on this pipeline, check out the pub describing the capabilities of [ProteinCartography](https://doi.org/10.57844/ARCADIA-A5A6-1068) and the [ProteinCartography GitHub repo](https://github.com/Arcadia-Science/ProteinCartography/releases/tag/v0.5.0). 
+This repo accompanies the pub on [ProteinCartography validation using the Deoxycytidine Kinase protein family](https://doi.org/10.57844/arcadia-a757-3651). ProteinCartography is a bioinformatics pipeline that groups proteins based on their predicted structures. It searches for proteins that are similar to an input structure and prepares an interactive map with the clustering information. For more information on this pipeline, check out the pub describing the capabilities of [ProteinCartography](https://doi.org/10.57844/ARCADIA-A5A6-1068) and the [ProteinCartography GitHub repo](https://github.com/Arcadia-Science/ProteinCartography/releases/tag/v0.5.0).
 
 In our [previous pub](https://doi.org/10.57844/arcadia-1e5d-e272) on the Deoxycytidine Kinase (dCK) protein family, we outlined a plan for using dCKs to validate the results of ProteinCartography, and we described in detail why we chose to use this family for our analysis. As part of this pub, we analyzed the resulting clusters and proposed a tentative strategy for selecting individual clusters and proteins to bring into the lab to study their biochemical function.
 
-In the [current pub](https://doi.org/10.57844/arcadia-a757-3651) that accompanies this repo, we selected proteins from two ProteinCartography clusters to bring into the lab. Our goal is to biochemically characterize the enzymatic activity of these proteins and understand how their activity profiles correlate with the structural groupings produced by ProteinCartography. Our findings could help us better understand the relationship between protein structure and function. Additionally, we could use the results to optimize and improve the performance of ProteinCartography. 
+In the [current pub](https://doi.org/10.57844/arcadia-a757-3651) that accompanies this repo, we selected proteins from two ProteinCartography clusters to bring into the lab. Our goal is to biochemically characterize the enzymatic activity of these proteins and understand how their activity profiles correlate with the structural groupings produced by ProteinCartography. Our findings could help us better understand the relationship between protein structure and function. Additionally, we could use the results to optimize and improve the performance of ProteinCartography.
 
 The scripts in this pub helped us identify the proteins to bring into the lab for our empirical studies. Additionally, we have also included the scripts used to prepare the plots in the pub.
 
-The analysis scripts include subclustering of ProteinCartography clusters to identify representative proteins for biochemical validation in the lab. These scripts are under the `finding_representatives` folder. 
+The analysis scripts include subclustering of ProteinCartography clusters to identify representative proteins for biochemical validation in the lab. These scripts are under the `finding_representatives` folder.
 
 There are also additional scripts included that were used to prepare the figures in the publication. These scripts are under the `plotting` folder.
 
@@ -45,6 +45,16 @@ conda activate dev
 
     `--from-history` only exports packages that were explicitly added by you (e.g., the packages you installed with `pip` or `mamba`) and `--no-builds` removes build specification from the exported packages to increase portability between different platforms.
 </details>
+
+## Reproducing the Analysis
+
+After setting up the conda environment (see above), all scripts can be run in the correct order with a single command from the repo root:
+
+```{bash}
+bash run_all.sh
+```
+
+This runs every analysis and plotting script with the input files included in the repository. Outputs are written into `output/` subdirectories alongside each script. See the [Overview](#overview) section below for individual script usage and details on each step.
 
 ## Data
 
@@ -80,12 +90,12 @@ Below we have provided a directory map, the scripts and data files, as well as t
 
 - **finding_representatives**
   - *cluster_representatives*
-    - Script: `find_cluster_representatives.py`
-    - Purpose: The scripts in this folder find the representatives from the overall ProteinCartography clusters. 
+    - Script: `find_cluster_representative.py`
+    - Purpose: The scripts in this folder find the representatives from the overall ProteinCartography clusters.
     - Usage:
       ```{bash}
       cd finding_representatives/cluster_representatives/
-      python find_cluster_representatives.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o data_folder/
+      python find_cluster_representative.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o data_folder/
       ```
   - *subcluster_representatives*
     - Scripts: `run_elbow_method.py`, `run_k_means_clustering.py`
@@ -97,18 +107,21 @@ Below we have provided a directory map, the scripts and data files, as well as t
       ```
       ```{bash}
       cd finding_representatives/subcluster_representatives/
-      python run_k_means_clustering.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -o representatives.tsv -e kclusters.tsv
+      python run_k_means_clustering.py -m ../input_files/all_by_all_tmscore_pivoted.tsv -c ../input_files/leiden_features.tsv -k data_folder/ -o representatives.tsv -e kclusters.tsv
       ```
+      The `-k`/`--k-folder` argument points to the `run_elbow_method.py` output folder and automatically reads the optimal k for each Leiden cluster. Alternatively, pass a single value with `-n`/`--cluster-count` (default: 3, the value used in the original analysis).
   - *input_files*
-    - Purpose: Input files used by the scripts in the `finding_representatives` directory can be found here. 
+    - Purpose: Input files used by the scripts in the `finding_representatives` directory can be found here.
       - These files are produced by the ProteinCartography pipeline and can also be found in this [Zenodo repository](https://doi.org/10.5281/zenodo.11288250).
-      - They include: 
+      - They include:
         - `all_by_all_tmscore_pivoted.tsv`
         - `leiden_features.tsv`
 - **plotting**
+
+  > **Note:** The heatmap and Sankey plot scripts use the commercial font "Suisse Int'l". If this font is not installed on your system, matplotlib and plotly will silently substitute a default font and the output figures will not exactly match the publication.
   - *FPLC*
     - Script: `prep_trace_graph.py`
-    - Purpose: This folder contains a script to create FPLC traces and all of the necessary input data. 
+    - Purpose: This folder contains a script to create FPLC traces and all of the necessary input data.
     - Sub-directories containing input data files generated with an FPLC instrument as part of size exclusion chromatography analyses.
       - `Standards/`
           File: `SEC_standards.tsv`
@@ -125,7 +138,7 @@ Below we have provided a directory map, the scripts and data files, as well as t
     - Usage:
       ```{bash}
       cd plotting/FPLC/
-      python prep_trace_graph.py -f Standards/SEC_standards.tsv -o plot_stadards.svg
+      python prep_trace_graph.py -f Standards/SEC_standards.tsv -o plot_standards.svg
       python prep_trace_graph.py -f human_dCK_P27707/P27707_SEC.tsv -o plot_P27707.svg
       python prep_trace_graph.py -f Antarctic_cod_A0A7J5YK87/A0A7J5YK87_SEC.tsv -o plot_A0A7J5YK87.svg
       python prep_trace_graph.py -f Almond_A0A4Y1QVV5/A0A4Y1QVV5_SEC.tsv -o plot_A0A4Y1QVV5.svg

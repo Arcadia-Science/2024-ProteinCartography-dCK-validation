@@ -67,6 +67,7 @@ def create_heatmap(input_file, output_file):
 
     # Plotting the secondary labels
     ax0.axis("off")
+    # "Suisse Int'l" is a commercial font; if not installed, matplotlib will substitute.
     font_style = {"fontstyle": "italic", "fontname": "Suisse Int'l"}
     for i, label in enumerate(secondary_labels):
         ax0.text(

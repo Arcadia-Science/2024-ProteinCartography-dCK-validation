@@ -16,7 +16,7 @@ input files for this analysis are provided in this repository under the
 
 Usage:
 cd finding_representatives/cluster_representatives/
-python find_cluster_representatives.py \
+python find_cluster_representative.py \
 --matrix-tsv ../input_files/all_by_all_tmscore_pivoted.tsv \
 --cluster-tsv ../input_files/leiden_features.tsv \
 --output-folder data_folder/
